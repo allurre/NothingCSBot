@@ -46,6 +46,36 @@ language =
 
 admin =
     .commands-updated = Команды обновлены
+    .panel-main = Это админ панель
+    .panel-pick_user = Выберите пользователя
+    .panel-change_user = Изменение пользователя
+    Имя пользователя: {$user}
+    .panel-sucsess = Успешно
+    .money-choose = Укажите количество монеток
+
+notifications =
+    .money_change = Ваши монетки изменены
+    Ваш баланс: {$coins}
+    Комментарий: {$reason}
+    .shoot_change = Ваши выстрелы изменены
+    Ваш баланс: {$shoot}
+    Комментарий: {$reason}
+    .status_change = Ваш ранг изменён
+    Ваш ранг: {$rang}
+    Комментарий: {$reason}
+    .day_update = Новый день - ноая жизнь
+    .reminder_shoots = У вас ещё есть выстрелы
+    .reminder_additionally = Вы ещё не собрали все доп. выстрелы
+    .reminder_hour = Остался час до сброса! Соберите выстрелы и потренеруйтесь
+
+admin_buttons =
+    .choose-user = Получить пользователя
+    .status = Изменить статус
+    .shoot = Выстрелы
+    .money = Монетки
+    .data = {$count}
+    .mange-user = Управление пользователями
+    .mange-item = Управление предметами
 
 errors =
     .regestration = Что то произошло в момент вашей регестрации.
@@ -55,6 +85,8 @@ errors =
     Нажмите /start чтобы начать игру!
     .no-calibration-user = Вы не прошли калибровку!
     Нажмите /start чтобы пройти её!
+    .no-select-user-found = Выбраный вами пользователь не найден!
+    Скорее всего он не зарегестрирован!
 
 unhandled = Неизвестное взаимодействие. Нажмите /start
 ##

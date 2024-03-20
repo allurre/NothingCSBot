@@ -24,6 +24,9 @@ feature.callbackQuery(
     );
 
     if (i18n.locales.includes(languageCode)) {
+      const userDatabase = ctx.database.user;
+      userDatabase.locate_code = languageCode;
+      userDatabase.save();
       await ctx.i18n.setLocale(languageCode);
 
       return ctx.editMessageText(ctx.t("language.changed"), {

@@ -9,6 +9,7 @@ const cache = new LRUCache<number, Document & IUser>(100);
 const UserSchema: Schema = new Schema({
   _id: { type: Number, required: true },
   username: { type: String, required: true },
+  locate_code: { type: String, required: true, default: "ru" },
   status_id: { type: Number, required: true, default: -1 },
   referal_id: { type: Number, required: false, default: undefined },
   daily: {

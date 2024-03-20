@@ -1,4 +1,7 @@
 import { autoChatAction } from "@grammyjs/auto-chat-action";
+import { ignoreOld } from "grammy-middlewares";
+import { apiThrottler } from "@grammyjs/transformer-throttler";
+import { autoRetry } from "@grammyjs/auto-retry";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { BotConfig, StorageAdapter, Bot as TelegramBot, session } from "grammy";
@@ -15,10 +18,15 @@ import {
   calibrationFeature,
   profileFeature,
   workoutFeature,
+  userShareFeature,
 } from "#root/bot/features/index.js";
 import { errorHandler } from "#root/bot/handlers/index.js";
 import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
-import { updateLogger } from "#root/bot/middlewares/index.js";
+import {
+  updateLogger,
+  attachUser,
+  setLanguage,
+} from "#root/bot/middlewares/index.js";
 import { config } from "#root/config.js";
 import { logger } from "#root/logger.js";
 
@@ -36,15 +44,19 @@ export function createBot(token: string, options: Options = {}) {
   const protectedBot = bot.errorBoundary(errorHandler);
 
   // Middlewares
+  const throttler = apiThrottler();
+  bot.api.config.use(throttler);
+  bot.api.config.use(autoRetry());
   bot.api.config.use(parseMode("HTML"));
 
   if (config.isDev) {
     protectedBot.use(updateLogger());
   }
-
+  protectedBot.use(ignoreOld());
   protectedBot.use(autoChatAction(bot.api));
   protectedBot.use(hydrateReply);
   protectedBot.use(hydrate());
+  protectedBot.use(attachUser);
   protectedBot.use(
     session({
       initial: () => ({}),
@@ -52,8 +64,10 @@ export function createBot(token: string, options: Options = {}) {
     }),
   );
   protectedBot.use(i18n);
+  protectedBot.use(setLanguage);
 
   // Handlers
+  protectedBot.use(userShareFeature);
   protectedBot.use(welcomeFeature);
   protectedBot.use(calibrationFeature);
   protectedBot.use(adminFeature);

@@ -5,3 +5,4 @@ export * from "./shoot.js";
 export * from "./workout.js";
 export * from "./additionally-shoots.js";
 export * from "./home.js";
+export * from "./admin-panel.js";

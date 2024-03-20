@@ -2,9 +2,6 @@ import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { profileData } from "#root/bot/callback-data/index.js";
-import { getInvetory } from "#root/database/schemas/user-inventory.js";
-import { Document } from "mongoose";
-import { IUserInventory } from "#root/database/interfaces/user-inventory.js";
 
 const composer = new Composer<Context>();
 
@@ -16,8 +13,7 @@ feature.callbackQuery(
   async (ctx) => {
     let { id } = profileData.unpack(ctx.callbackQuery.data);
     if (id === 0) id = ctx.from.id;
-    const userInventory: (Document & IUserInventory) | undefined =
-      await getInvetory(id);
+    const userInventory = ctx.database.inventory;
     if (userInventory && userInventory !== undefined) {
       ctx.answerCallbackQuery();
       ctx.reply(ctx.t("profile.main", { id: userInventory.id }));

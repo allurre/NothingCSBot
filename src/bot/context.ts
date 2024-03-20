@@ -5,6 +5,7 @@ import type { HydrateFlavor } from "@grammyjs/hydrate";
 import type { I18nFlavor } from "@grammyjs/i18n";
 import type { ParseModeFlavor } from "@grammyjs/parse-mode";
 import type { Logger } from "#root/logger.js";
+import { Database } from "#root/database/interfaces/database.js";
 
 export type SessionData = {
   // field?: string;
@@ -20,7 +21,8 @@ export type Context = ParseModeFlavor<
       ExtendedContextFlavor &
       SessionFlavor<SessionData> &
       I18nFlavor &
-      AutoChatActionFlavor
+      AutoChatActionFlavor &
+      Database
   >
 >;
 

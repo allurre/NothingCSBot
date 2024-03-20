@@ -48,6 +48,10 @@ export async function shoot(
     ctx.reply(ctx.t("errors.no-calibration-user"));
     return;
   }
+  if (userInventory.targets < 1) {
+    ctx.reply(ctx.t("shoot.no-targets"));
+    return;
+  }
   const shootMessage = ctx.reply(ctx.t("shoot.start"));
   const score = randomInt(1, 100);
   const hitTarget = getHitPosition(userDatabase.status_id, score);

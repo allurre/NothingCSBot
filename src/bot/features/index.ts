@@ -5,3 +5,4 @@ export * from "./welcome.js";
 export * from "./calibration.js";
 export * from "./profile.js";
 export * from "./workout.js";
+export * from "./shared-user.js";
