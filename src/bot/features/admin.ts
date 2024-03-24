@@ -6,6 +6,7 @@ import { isAdmin } from "#root/bot/filters/index.js";
 import { setCommandsHandler } from "#root/bot/handlers/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
+import { adminComment } from "#root/bot/statelessquestion/admin.js";
 import {
   createAdminPanelMainKeyboard,
   createUserPickKeyboard,
@@ -58,36 +59,73 @@ feature.callbackQuery(
     }
     if (count === 0) {
       ctx.answerCallbackQuery();
-      ctx.reply(ctx.t("admin.money-choose"));
-      // const message = await waitMessage(ctx);
-      // if (message === undefined) {
-      //   return ctx.reply(ctx.t("errors.no-response"));
-      // }
-      // changeMoney = Number.parseInt(message.text || "0", 10);
+      return ctx.reply(
+        ctx.t("admin.money-choose") +
+          adminComment.messageSuffixHTML(`${userId.toString()}/coins`),
+        {
+          reply_markup: {
+            force_reply: true,
+            input_field_placeholder: `${userInventory.coins}/${ctx.from.first_name}`,
+          },
+        },
+      );
     }
     userInventory.coins += count;
     userInventory.save();
     ctx.answerCallbackQuery();
-    ctx.api.sendMessage(
-      userId,
-      ctx.t("notifications.money_change", {
-        coins: userInventory.coins,
-        reason: "CONSOLE",
-      }),
-    );
     ctx.reply(ctx.t("admin.panel-sucsess"), {
       reply_markup: { remove_keyboard: true },
     });
   },
 );
 
+feature.command("panel", logHandle("command-admin-panel"), async (ctx) => {
+  ctx.reply(ctx.t("admin.panel-main"), {
+    reply_markup: createAdminPanelMainKeyboard(ctx),
+  });
+});
+
 feature.callbackQuery(
-  shootChangeData.filter(),
-  logHandle("keyboard-usershootchange-select"),
+  userManagementData.filter(),
+  logHandle("keyboard-usermanage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.reply(ctx.t("admin.panel-pick_user"), {
       reply_markup: createUserPickKeyboard(ctx),
+    });
+  },
+);
+
+feature.callbackQuery(
+  shootChangeData.filter(),
+  logHandle("keyboard-usertargetschange-select"),
+  async (ctx) => {
+    const { id: userId, count } = shootChangeData.unpack(
+      ctx.callbackQuery.data,
+    );
+    const userInventory = await getInvetory(userId);
+    if (userInventory === undefined) {
+      ctx.answerCallbackQuery();
+      return ctx.reply(ctx.t("errors.no-select-user-found"));
+    }
+    if (count === 0) {
+      ctx.answerCallbackQuery();
+      return ctx.reply(
+        ctx.t("admin.targets-choose") +
+          adminComment.messageSuffixHTML(`${userId.toString()}/targets`),
+        {
+          reply_markup: {
+            force_reply: true,
+            input_field_placeholder: `${userInventory.targets}/${ctx.from.first_name}`,
+          },
+        },
+      );
+    }
+    userInventory.targets += count;
+    userInventory.save();
+    ctx.answerCallbackQuery();
+    ctx.reply(ctx.t("admin.panel-sucsess"), {
+      reply_markup: { remove_keyboard: true },
     });
   },
 );

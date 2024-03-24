@@ -1,11 +1,18 @@
 import { randomBytes } from "node:crypto";
-import { getUser } from "#root/database/schemas/user.js";
-import { CallbackQueryContext, ChatTypeContext } from "grammy";
-import { getInvetory } from "#root/database/schemas/user-inventory.js";
-import { getStats } from "#root/database/schemas/user-stats.js";
-import { Context } from "../context.js";
+import {
+  Api,
+  CallbackQueryContext,
+  ChatTypeContext,
+  Context,
+  RawApi,
+} from "grammy";
+import { IUser } from "#root/database/interfaces/user.js";
+import { IUserInventory } from "#root/database/interfaces/user-inventory.js";
+import { IUserStats } from "#root/database/interfaces/user-stats.js";
+import { Document } from "mongoose";
 import { getShootChance, shootReward } from "./varibles.js";
 import { hitText } from "./text.js";
+import { i18n } from "../i18n.js";
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
@@ -31,47 +38,81 @@ function getHitPosition(statusId: number, score: number): number {
 
 export async function shoot(
   ctx: CallbackQueryContext<ChatTypeContext<Context, "private">>,
+  userDatabase: Document & IUser,
+  userInventory: Document & IUserInventory,
+  userStats: Document & IUserStats,
 ): Promise<void> {
-  const userId = ctx.from.id;
-  const userDatabase = await getUser(userId);
-  const userInventory = await getInvetory(userId);
-  const userStats = await getStats(userId);
-  if (
-    userDatabase === undefined ||
-    userInventory === undefined ||
-    userStats === undefined
-  ) {
-    ctx.reply(ctx.t("errors.no-registered-user"));
-    return;
-  }
-  if (userDatabase.status_id === undefined) {
-    ctx.reply(ctx.t("errors.no-calibration-user"));
+  const user = userDatabase;
+  const inventory = userInventory;
+  const stats = userStats;
+  if (user.status_id === undefined) {
+    ctx.reply(i18n.t(user.locate_code, "errors.no-calibration-user"));
     return;
   }
   if (userInventory.targets < 1) {
-    ctx.reply(ctx.t("shoot.no-targets"));
+    ctx.reply(i18n.t(user.locate_code, "shoot.no-targets"));
     return;
   }
-  const shootMessage = ctx.reply(ctx.t("shoot.start"));
+  const shootMessage = ctx.reply(i18n.t(user.locate_code, "shoot.start"));
   const score = randomInt(1, 100);
-  const hitTarget = getHitPosition(userDatabase.status_id, score);
+  const hitTarget = getHitPosition(user.status_id, score);
   const reward = shootReward[hitTarget];
-  userInventory.coins += reward;
-  userInventory.targets -= 1;
-  userStats.earned += reward;
-  userStats.shoots += 1;
+  inventory.coins += reward;
+  inventory.targets -= 1;
+  stats.earned += reward;
+  stats.shoots += 1;
   if (hitTarget === 0) {
-    userStats.headshots += 1;
+    stats.headshots += 1;
   }
   const timerPromise = new Promise((resolve) => {
     setTimeout(resolve, 3000);
   });
   Promise.all([
     shootMessage,
-    userInventory.save(),
-    userStats.save(),
+    inventory.save(),
+    stats.save(),
     timerPromise,
   ]).then(() => {
-    ctx.reply(ctx.t(`shoot.end-${hitText[hitTarget]}`, { reward }));
+    ctx.reply(
+      i18n.t(userDatabase.locate_code, `shoot.end-${hitText[hitTarget]}`, {
+        reward,
+      }),
+    );
   });
+}
+
+export async function sendNotification(
+  api: Api<RawApi>,
+  userDatabase: IUser,
+  notificationType: string,
+  count?: number,
+  comment?: string,
+) {
+  switch (notificationType) {
+    case "day_update": {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.day_update"),
+      );
+      break;
+    }
+    case "money_change": {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.money_change", {
+          coins: count || 0,
+          reason: comment || "CONSOLE",
+        }),
+      );
+      break;
+    }
+
+    default: {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.day_update"),
+      );
+      break;
+    }
+  }
 }

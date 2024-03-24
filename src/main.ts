@@ -21,7 +21,6 @@ try {
 
   await initializeMongoose();
   if (config.BOT_MODE === "webhook") {
-    // to prevent receiving updates before the bot is ready
     await bot.init();
 
     await server.listen({

@@ -65,24 +65,24 @@ export const createUserChangeKeyboard = (user: IUser, ctx: Context) => {
         }),
       },
       {
-        text: ctx.t("admin_buttons.data", { count: -50 }),
+        text: ctx.t("admin_buttons.data", { count: -1 }),
         callback_data: shootChangeData.pack({
           id: user.id,
-          count: -50,
+          count: -1,
         }),
       },
       {
-        text: ctx.t("admin_buttons.data", { count: 50 }),
+        text: ctx.t("admin_buttons.data", { count: 1 }),
         callback_data: shootChangeData.pack({
           id: user.id,
-          count: 50,
+          count: 1,
         }),
       },
       {
-        text: ctx.t("admin_buttons.data", { count: 500 }),
+        text: ctx.t("admin_buttons.data", { count: 5 }),
         callback_data: shootChangeData.pack({
           id: user.id,
-          count: 500,
+          count: 5,
         }),
       },
     ],

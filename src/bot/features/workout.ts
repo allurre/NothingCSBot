@@ -24,7 +24,10 @@ feature.callbackQuery(
   shootData.filter(),
   logHandle("keyboard-shoot-select"),
   async (ctx) => {
-    shoot(ctx);
+    if (ctx.database === undefined) {
+      ctx.reply(ctx.t("errors.no-registered-user"));
+    }
+    shoot(ctx, ctx.database.user, ctx.database.inventory, ctx.database.stats);
     ctx.answerCallbackQuery();
   },
 );

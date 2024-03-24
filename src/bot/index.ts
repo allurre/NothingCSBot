@@ -5,6 +5,7 @@ import { autoRetry } from "@grammyjs/auto-retry";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { BotConfig, StorageAdapter, Bot as TelegramBot, session } from "grammy";
+import { adminComment } from "#root/bot/statelessquestion/admin.js";
 import {
   Context,
   SessionData,
@@ -77,6 +78,8 @@ export function createBot(token: string, options: Options = {}) {
   if (isMultipleLocales) {
     protectedBot.use(languageFeature);
   }
+
+  protectedBot.use(adminComment.middleware());
 
   // must be the last handler
   protectedBot.use(unhandledFeature);
