@@ -96,11 +96,21 @@ export async function sendNotification(
       );
       break;
     }
-    case "money_change": {
+    case "coins": {
       api.sendMessage(
         userDatabase.id,
         i18n.t(userDatabase.locate_code, "notifications.money_change", {
           coins: count || 0,
+          reason: comment || "CONSOLE",
+        }),
+      );
+      break;
+    }
+    case "targets": {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.shoot_change", {
+          shoot: count || 0,
           reason: comment || "CONSOLE",
         }),
       );

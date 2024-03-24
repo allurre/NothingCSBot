@@ -44,7 +44,7 @@ export const adminComment = new StatelessQuestion(
     }
     userInventory.set(action, count);
     userInventory.save();
-    sendNotification(ctx.api, userDatabase, "money_change", count, comment);
+    sendNotification(ctx.api, userDatabase, action, count, comment);
     ctx.reply(i18n.t(adminUser.locate_code, "admin.panel-sucsess"), {
       reply_markup: { remove_keyboard: true },
     });
