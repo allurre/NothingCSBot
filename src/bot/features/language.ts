@@ -19,6 +19,9 @@ feature.callbackQuery(
   changeLanguageData.filter(),
   logHandle("keyboard-language-select"),
   async (ctx) => {
+    if (ctx.database === undefined) {
+      return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
+    }
     const { code: languageCode } = changeLanguageData.unpack(
       ctx.callbackQuery.data,
     );

@@ -26,6 +26,10 @@ function getPrivateChatAdminCommands(localeCode: string): BotCommand[] {
       command: "setcommands",
       description: i18n.t(localeCode, "setcommands_command.description"),
     },
+    {
+      command: "panel",
+      description: i18n.t(localeCode, "panel_command.description"),
+    },
   ];
 }
 

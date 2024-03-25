@@ -15,7 +15,13 @@ feature.callbackQuery(
   calibrationData.filter(),
   logHandle("keyboard-calibration-select"),
   async (ctx) => {
+    if (ctx.database === undefined) {
+      return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
+    }
     const userDatabase = ctx.database.user;
+    if (userDatabase.status_id || userDatabase.status_id !== -1) {
+      return ctx.answerCallbackQuery(ctx.t("calibration.allready-complite"));
+    }
     ctx.answerCallbackQuery();
     const calibrationMessage = await ctx.replyWithDice("🎯");
     const rangId: number = getColibrationRangID(calibrationMessage.dice.value);

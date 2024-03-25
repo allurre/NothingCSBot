@@ -9,7 +9,7 @@ const composer = new Composer<Context>();
 
 const feature = composer.chatType(["private", "group"]).filter(isAdmin);
 
-feature.on(":users_shared", logHandle("usershare"), async (ctx) => {
+feature.on(":users_shared", logHandle("admin-usershare"), async (ctx) => {
   const reqwest = ctx.message.users_shared.request_id;
   switch (reqwest) {
     case 1: {

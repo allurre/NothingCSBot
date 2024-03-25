@@ -31,7 +31,7 @@ export function getRangById(id: number): string {
     17: "SUPREME MASTER",
     18: "THE GLOBAL ELITE",
   };
-  return prefix[id] || "SILVER I";
+  return prefix[id] || "BEGINNER";
 }
 
 export function getShootChance(status: number): number[] {
