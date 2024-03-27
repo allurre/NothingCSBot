@@ -1,4 +1,4 @@
-import { Schema, model, Model, Document } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 import { logger } from "#root/logger.js";
 import { IReferrals } from "../interfaces/referrals.js";
 import { LRUCache } from "../cache/cache.js";
@@ -34,7 +34,7 @@ export async function getReferrals(
   const cached = cache.get(id);
   if (cached) return cached;
 
-  const referralsDatabase = await Model.findById(id);
+  const referralsDatabase = await Referrals.findById(id);
   if (referralsDatabase) {
     cache.add(id, referralsDatabase);
   } else {
@@ -53,7 +53,7 @@ export async function createReferral(
     return undefined;
   }
 
-  const referralsDatabase = await new Model({
+  const referralsDatabase = new Referrals({
     _id: id,
   });
 

@@ -6,15 +6,26 @@ import { isAdmin } from "#root/bot/filters/index.js";
 import { setCommandsHandler } from "#root/bot/handlers/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
-import { adminComment } from "#root/bot/statelessquestion/admin.js";
+import { adminUserChange } from "#root/bot/statelessquestion/admin.js";
+import {
+  getAllSubscribeChannels,
+  removeSubscribeChannel,
+} from "#root/database/schemas/subscribe-channels.js";
 import {
   createAdminPanelMainKeyboard,
+  createChannelPickKeyboard,
+  createChannelsManageKeyboard,
   createUserPickKeyboard,
+  createChannelsRemoveKeyboard,
 } from "../keyboards/index.js";
 import {
   userManagementData,
   moneyChangeData,
   shootChangeData,
+  subscribeChannelsManagementData,
+  addSubscribeChannelData,
+  removeSubscribeChannelData,
+  deleteSubscribeChannelData,
 } from "../callback-data/index.js";
 
 const composer = new Composer<Context>();
@@ -46,6 +57,77 @@ feature.callbackQuery(
 );
 
 feature.callbackQuery(
+  subscribeChannelsManagementData.filter(),
+  logHandle("keyboard-subscribechannelsmanage-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    const allChannels = await getAllSubscribeChannels();
+    if (allChannels === undefined) {
+      return ctx.reply(ctx.t("errors.an-error-has-occurred"));
+    }
+    const channelsText =
+      allChannels.length > 0
+        ? allChannels
+            .map(
+              (channel) =>
+                `${channel.id}) <a href="${channel.url}">${channel.name}</a> - ${channel.adding}`,
+            )
+            .join("\n")
+        : "admin.panel-no_channels";
+
+    ctx.reply(
+      ctx.t("admin.panel-channels_manage", { channels: channelsText }),
+      {
+        reply_markup: createChannelsManageKeyboard(ctx),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  addSubscribeChannelData.filter(),
+  logHandle("keyboard-addsubscribechannel-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    ctx.reply(ctx.t("admin.panel-pick_new_channel"), {
+      reply_markup: createChannelPickKeyboard(ctx),
+    });
+  },
+);
+
+feature.callbackQuery(
+  removeSubscribeChannelData.filter(),
+  logHandle("keyboard-removesubscribechannels-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    ctx.reply(ctx.t("admin.panel-remove_channel"), {
+      reply_markup: await createChannelsRemoveKeyboard(ctx),
+    });
+  },
+);
+
+feature.callbackQuery(
+  deleteSubscribeChannelData.filter(),
+  logHandle("keyboard-deletesubscribechannel-select"),
+  async (ctx) => {
+    const { id: channelId } = deleteSubscribeChannelData.unpack(
+      ctx.callbackQuery.data,
+    );
+    ctx.answerCallbackQuery();
+    const removeStatus = await removeSubscribeChannel(channelId);
+    if (removeStatus) {
+      ctx.reply(ctx.t("admin.panel-delete_channel_success"), {
+        reply_markup: { remove_keyboard: true },
+      });
+    } else {
+      ctx.reply(ctx.t("admin.panel-delete_channel_failed"), {
+        reply_markup: { remove_keyboard: true },
+      });
+    }
+  },
+);
+
+feature.callbackQuery(
   moneyChangeData.filter(),
   logHandle("keyboard-usermoneychange-select"),
   async (ctx) => {
@@ -61,11 +143,11 @@ feature.callbackQuery(
       ctx.answerCallbackQuery();
       return ctx.reply(
         ctx.t("admin.money-choose") +
-          adminComment.messageSuffixHTML(`${userId.toString()}/coins`),
+          adminUserChange.messageSuffixHTML(`${userId.toString()}@coins`),
         {
           reply_markup: {
             force_reply: true,
-            input_field_placeholder: `${userInventory.coins}/${ctx.from.first_name}`,
+            input_field_placeholder: `${userInventory.coins}@${ctx.from.first_name}`,
           },
         },
       );
@@ -75,23 +157,6 @@ feature.callbackQuery(
     ctx.answerCallbackQuery();
     ctx.reply(ctx.t("admin.panel-sucsess"), {
       reply_markup: { remove_keyboard: true },
-    });
-  },
-);
-
-feature.command("panel", logHandle("command-admin-panel"), async (ctx) => {
-  ctx.reply(ctx.t("admin.panel-main"), {
-    reply_markup: createAdminPanelMainKeyboard(ctx),
-  });
-});
-
-feature.callbackQuery(
-  userManagementData.filter(),
-  logHandle("keyboard-usermanage-select"),
-  async (ctx) => {
-    ctx.answerCallbackQuery();
-    ctx.reply(ctx.t("admin.panel-pick_user"), {
-      reply_markup: createUserPickKeyboard(ctx),
     });
   },
 );
@@ -112,11 +177,11 @@ feature.callbackQuery(
       ctx.answerCallbackQuery();
       return ctx.reply(
         ctx.t("admin.targets-choose") +
-          adminComment.messageSuffixHTML(`${userId.toString()}/targets`),
+          adminUserChange.messageSuffixHTML(`${userId.toString()}@targets`),
         {
           reply_markup: {
             force_reply: true,
-            input_field_placeholder: `${userInventory.targets}/${ctx.from.first_name}`,
+            input_field_placeholder: `${userInventory.targets}@${ctx.from.first_name}`,
           },
         },
       );

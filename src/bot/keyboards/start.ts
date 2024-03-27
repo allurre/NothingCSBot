@@ -28,9 +28,7 @@ export const createStartKeyboard = (ctx: Context) => {
     [
       {
         text: ctx.t("start_buttons.profile"),
-        callback_data: profileData.pack({
-          id: 0,
-        }),
+        callback_data: profileData.pack({}),
       },
     ],
   ]);

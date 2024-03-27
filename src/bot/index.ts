@@ -5,7 +5,10 @@ import { autoRetry } from "@grammyjs/auto-retry";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { BotConfig, StorageAdapter, Bot as TelegramBot, session } from "grammy";
-import { adminComment } from "#root/bot/statelessquestion/admin.js";
+import {
+  adminUserChange,
+  adminNewChannel,
+} from "#root/bot/statelessquestion/admin.js";
 import {
   Context,
   SessionData,
@@ -19,7 +22,9 @@ import {
   calibrationFeature,
   profileFeature,
   workoutFeature,
-  userShareFeature,
+  adminUserShareFeature,
+  adminChannelShareFeature,
+  additionallyFeature,
 } from "#root/bot/features/index.js";
 import { errorHandler } from "#root/bot/handlers/index.js";
 import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
@@ -68,18 +73,21 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(setLanguage);
 
   // Handlers
-  protectedBot.use(userShareFeature);
+  protectedBot.use(adminUserShareFeature);
+  protectedBot.use(adminChannelShareFeature);
   protectedBot.use(welcomeFeature);
   protectedBot.use(calibrationFeature);
   protectedBot.use(adminFeature);
   protectedBot.use(profileFeature);
   protectedBot.use(workoutFeature);
+  protectedBot.use(additionallyFeature);
 
   if (isMultipleLocales) {
     protectedBot.use(languageFeature);
   }
 
-  protectedBot.use(adminComment.middleware());
+  protectedBot.use(adminUserChange.middleware());
+  protectedBot.use(adminNewChannel.middleware());
 
   // must be the last handler
   protectedBot.use(unhandledFeature);

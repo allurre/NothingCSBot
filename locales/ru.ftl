@@ -83,16 +83,41 @@ language =
 
 admin =
     .commands-updated = Команды обновлены
-    .panel-coment = Укажите комментарий
     .panel-main = Это админ панель
     .panel-pick_user = Выберите пользователя
     .panel-change_user = Изменение пользователя
     Имя пользователя: {$user}
+    .panel-channels_manage = Управление каналами с подпиской
+    Текущие каналы:
+    {$channels}
+    .panel-pick_new_channel = Выберите новый канал
+    .panel-add_new_channel = Укажите рекламню ссылку и имя канала (будет отображено в кнопке) через @
+    .panel-remove_channel = Выберите канал для удаления
+    .panel-delete_channel_success = Успешно! Канал удалён
+    .panel-delete_channel_failed = Не удалось удалить канал
+    .panel-faled_new_channel = Не удалось добавить канал. Проверьте что:
+    Чат является каналом
+    Бот является админом этого канала
+    Этого канала нет в доп. каналах
     .panel-sucsess = Успешно
     .money-choose = Укажите количество монеток и комментарий в формате
     новое кол-во монеток/комментарий
     .targets-choose = Укажите количество мишеней и комментарий в формате
     новое кол-во мишеней/комментарий
+
+admin_buttons =
+    .choose-user = Получить пользователя
+    .choose-channel = Получить канал
+    .status = Изменить статус
+    .shoot = Выстрелы
+    .money = Монетки
+    .data = {$count}
+    .add-channel = Добавить канал
+    .remove-channel = Удалить канал
+    .no_channels = Нет каналов
+    .mange-user = Управление пользователями
+    .mange-item = Управление предметами
+    .mange-subscribe-channels = Управление доп. каналами
 
 notifications =
     .money_change = Ваши монетки изменены
@@ -108,15 +133,6 @@ notifications =
     .reminder_shoots = У вас ещё есть выстрелы
     .reminder_additionally = Вы ещё не собрали все доп. выстрелы
     .reminder_hour = Остался час до сброса! Соберите выстрелы и потренеруйтесь
-
-admin_buttons =
-    .choose-user = Получить пользователя
-    .status = Изменить статус
-    .shoot = Выстрелы
-    .money = Монетки
-    .data = {$count}
-    .mange-user = Управление пользователями
-    .mange-item = Управление предметами
 
 errors =
     .regestration = Что то произошло в момент вашей регестрации.

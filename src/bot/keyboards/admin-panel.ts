@@ -5,9 +5,15 @@ import {
   statusChangeData,
   userManagementData,
   itemManagementData,
+  subscribeChannelsManagementData,
+  addSubscribeChannelData,
+  deleteSubscribeChannelData,
+  removeSubscribeChannelData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
+import { getAllSubscribeChannels } from "#root/database/schemas/subscribe-channels.js";
+import { chunk } from "../helpers/keyboard.js";
 
 export const createAdminPanelMainKeyboard = (ctx: Context) => {
   return InlineKeyboard.from([
@@ -16,6 +22,12 @@ export const createAdminPanelMainKeyboard = (ctx: Context) => {
         text: ctx.t("admin_buttons.mange-user"),
         callback_data: userManagementData.pack({}),
       },
+      {
+        text: ctx.t("admin_buttons.mange-subscribe-channels"),
+        callback_data: subscribeChannelsManagementData.pack({}),
+      },
+    ],
+    [
       {
         text: ctx.t("admin_buttons.mange-item"),
         callback_data: itemManagementData.pack({}),
@@ -106,6 +118,62 @@ export const createUserPickKeyboard = (ctx: Context) => {
           request_id: 1,
           max_quantity: 1,
           user_is_bot: false,
+        },
+      },
+    ],
+  ]);
+};
+
+export const createChannelsManageKeyboard = (ctx: Context) => {
+  return InlineKeyboard.from([
+    [
+      {
+        text: ctx.t("admin_buttons.add-channel"),
+        callback_data: addSubscribeChannelData.pack({}),
+      },
+      {
+        text: ctx.t("admin_buttons.remove-channel"),
+        callback_data: removeSubscribeChannelData.pack({}),
+      },
+    ],
+  ]);
+};
+
+export const createChannelsRemoveKeyboard = async (ctx: Context) => {
+  const allChannels = await getAllSubscribeChannels();
+  if (allChannels === undefined || allChannels.length === 0) {
+    return InlineKeyboard.from([
+      [
+        {
+          text: ctx.t("admin_buttons.no_channels"),
+          callback_data: "no-data-here",
+        },
+      ],
+    ]);
+  }
+
+  return InlineKeyboard.from(
+    chunk(
+      allChannels.map((channel) => ({
+        text: channel.name,
+        callback_data: deleteSubscribeChannelData.pack({
+          id: channel.id,
+        }),
+      })),
+      3,
+    ),
+  );
+};
+
+export const createChannelPickKeyboard = (ctx: Context) => {
+  return Keyboard.from([
+    [
+      {
+        text: ctx.t("admin_buttons.choose-channel"),
+        request_chat: {
+          request_id: 1001,
+          bot_is_member: true,
+          chat_is_channel: true,
         },
       },
     ],

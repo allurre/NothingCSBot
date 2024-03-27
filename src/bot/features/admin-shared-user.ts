@@ -34,4 +34,4 @@ feature.on(":users_shared", logHandle("admin-usershare"), async (ctx) => {
   }
 });
 
-export { composer as userShareFeature };
+export { composer as adminUserShareFeature };

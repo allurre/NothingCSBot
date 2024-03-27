@@ -16,7 +16,7 @@ export const createChangeLanguageKeyboard = async (ctx: Context) => {
 
   return InlineKeyboard.from(
     chunk(
-      i18n.locales.map((localeCode) => ({
+      i18n.locales.map((localeCode: string) => ({
         text: getLabel(localeCode),
         callback_data: changeLanguageData.pack({
           code: localeCode,
