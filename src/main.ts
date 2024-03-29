@@ -10,6 +10,7 @@ import { initializeMongoose } from "#root/database/mongo.js";
 try {
   const bot = createBot(config.BOT_TOKEN);
   const server = await createServer(bot);
+  process.on("unhandledRejection", (error) => logger.error(error));
 
   // Graceful shutdown
   onShutdown(async () => {

@@ -1,11 +1,5 @@
 import { randomBytes } from "node:crypto";
-import {
-  Api,
-  CallbackQueryContext,
-  ChatTypeContext,
-  Context,
-  RawApi,
-} from "grammy";
+import { Api, CallbackQueryContext, ChatTypeContext, RawApi } from "grammy";
 import { IUser } from "#root/database/interfaces/user.js";
 import { IUserInventory } from "#root/database/interfaces/user-inventory.js";
 import { IUserStats } from "#root/database/interfaces/user-stats.js";
@@ -13,6 +7,7 @@ import { Document } from "mongoose";
 import { getShootChance, shootReward } from "./varibles.js";
 import { hitText } from "./text.js";
 import { i18n } from "../i18n.js";
+import { Context } from "../context.js";
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
@@ -124,5 +119,27 @@ export async function sendNotification(
       );
       break;
     }
+  }
+}
+
+export async function isSubscribed(
+  ctx: Context,
+  channelId: number,
+  userId: number,
+) {
+  try {
+    const userMember = await ctx.api.getChatMember(channelId, userId);
+    const isMember = ["member", "administrator", "creator"].includes(
+      userMember.status,
+    );
+    if (isMember) return true;
+    return false;
+  } catch {
+    ctx.reply(
+      ctx.t("errors.channel-sub-check-failed", {
+        id: channelId,
+      }),
+    );
+    return false;
   }
 }

@@ -12,7 +12,10 @@ import {
 import type { Context } from "../context.js";
 
 export async function attachUser(ctx: Context, next: NextFunction) {
-  if (ctx.from === undefined) {
+  if (
+    ctx.from === undefined ||
+    (ctx.msg === undefined && ctx.callbackQuery === undefined)
+  ) {
     return next();
   }
   let userDB;

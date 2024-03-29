@@ -1,5 +1,4 @@
 import { autoChatAction } from "@grammyjs/auto-chat-action";
-import { ignoreOld } from "grammy-middlewares";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { autoRetry } from "@grammyjs/auto-retry";
 import { hydrate } from "@grammyjs/hydrate";
@@ -32,6 +31,7 @@ import {
   updateLogger,
   attachUser,
   setLanguage,
+  ignoreOld,
 } from "#root/bot/middlewares/index.js";
 import { config } from "#root/config.js";
 import { logger } from "#root/logger.js";
@@ -58,7 +58,6 @@ export function createBot(token: string, options: Options = {}) {
   if (config.isDev) {
     protectedBot.use(updateLogger());
   }
-  protectedBot.use(ignoreOld());
   protectedBot.use(autoChatAction(bot.api));
   protectedBot.use(hydrateReply);
   protectedBot.use(hydrate());
@@ -71,6 +70,7 @@ export function createBot(token: string, options: Options = {}) {
   );
   protectedBot.use(i18n);
   protectedBot.use(setLanguage);
+  protectedBot.use(ignoreOld(5 * 60));
 
   // Handlers
   protectedBot.use(adminUserShareFeature);

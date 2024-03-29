@@ -73,10 +73,12 @@ feature.callbackQuery(
                 `${channel.id}) <a href="${channel.url}">${channel.name}</a> - ${channel.adding}`,
             )
             .join("\n")
-        : "admin.panel-no_channels";
+        : "";
 
     ctx.reply(
-      ctx.t("admin.panel-channels_manage", { channels: channelsText }),
+      ctx.t("admin.panel-channels_manage", {
+        channels: channelsText || ctx.t("admin.panel-no_channels"),
+      }),
       {
         reply_markup: createChannelsManageKeyboard(ctx),
       },

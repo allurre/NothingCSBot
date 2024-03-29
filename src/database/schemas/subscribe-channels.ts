@@ -78,5 +78,5 @@ export async function removeSubscribeChannel(
   if (SubscribeChannelDelete) {
     return true;
   }
-  return undefined;
+  return false;
 }

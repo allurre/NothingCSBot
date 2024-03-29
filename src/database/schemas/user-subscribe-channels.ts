@@ -4,11 +4,7 @@ import { IUserSubscribeChannels } from "../interfaces/user-subscribe-channels.js
 
 const UserSubscribeChannelsSchema: Schema = new Schema({
   _id: { type: Number, required: true },
-  channels: [
-    {
-      id: { type: Number, required: true },
-    },
-  ],
+  channels: [{ type: Number, required: true }],
 });
 
 const UserSubscribeChannels = model<IUserSubscribeChannels>(
@@ -22,7 +18,7 @@ export async function getUserSubscribeChannels(
   id: number,
 ): Promise<(Document & IUserSubscribeChannels) | undefined> {
   if (!id) {
-    logger.error("User referral Id is required.");
+    logger.error("User additionaly Id is required.");
     return undefined;
   }
 
@@ -36,9 +32,9 @@ export async function getUserSubscribeChannels(
   return UserSubscribeChannelsDatabase;
 }
 
-export async function createUserSubscribeChannels(
+export function createUserSubscribeChannels(
   id: number,
-): Promise<(Document & IUserSubscribeChannels) | undefined> {
+): (Document & IUserSubscribeChannels) | undefined {
   if (!id) {
     logger.error("New user additionaly Id is required.");
     return undefined;
@@ -46,7 +42,8 @@ export async function createUserSubscribeChannels(
 
   const UserSubscribeChannelsDatabase = new UserSubscribeChannels({
     _id: id,
-    channels: [undefined],
+    channels: [],
   });
+
   return UserSubscribeChannelsDatabase;
 }
