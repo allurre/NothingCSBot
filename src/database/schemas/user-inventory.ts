@@ -9,19 +9,16 @@ const InventorySchema: Schema = new Schema({
   _id: { type: Number, required: true },
   coins: { type: Number, required: true, default: 0 },
   targets: { type: Number, required: true, default: 0 },
-  items: [
-    {
-      id: { type: Number, required: true },
-      name: { type: String, required: true },
-      image: { type: String, required: false },
-    },
-  ],
+  items: [{ type: Number, required: true }],
 });
 
-InventorySchema.pre("save", function u(this: Document & IUserInventory, next) {
-  cache.add(this._id, this);
-  next();
-});
+InventorySchema.pre(
+  "save",
+  function psave(this: Document & IUserInventory, next) {
+    cache.add(this._id, this);
+    next();
+  },
+);
 
 const Inventory = model<IUserInventory>("Inventory", InventorySchema);
 

@@ -19,7 +19,7 @@ feature.callbackQuery(
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
     }
     const userDatabase = ctx.database.user;
-    if (userDatabase.status_id || userDatabase.status_id !== -1) {
+    if (userDatabase.status_id !== -1) {
       return ctx.answerCallbackQuery(ctx.t("calibration.allready-complite"));
     }
     ctx.answerCallbackQuery();

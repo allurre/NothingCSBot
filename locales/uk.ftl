@@ -6,6 +6,7 @@ setcommands_command =
     .description = Набір команд для бота
 
 start = 
+    .register = ХУУУУУУУУУУЙ
     .welcome = Здоров!
 start_buttons =
         .roll = 🎲 Кидайте кістки

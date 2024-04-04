@@ -30,7 +30,6 @@ import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
 import {
   updateLogger,
   attachUser,
-  setLanguage,
   ignoreOld,
 } from "#root/bot/middlewares/index.js";
 import { config } from "#root/config.js";
@@ -69,7 +68,6 @@ export function createBot(token: string, options: Options = {}) {
     }),
   );
   protectedBot.use(i18n);
-  protectedBot.use(setLanguage);
   protectedBot.use(ignoreOld(5 * 60));
 
   // Handlers

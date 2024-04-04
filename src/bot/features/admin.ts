@@ -17,7 +17,7 @@ import {
   createChannelsManageKeyboard,
   createUserPickKeyboard,
   createChannelsRemoveKeyboard,
-} from "../keyboards/index.js";
+} from "#root/bot/keyboards/index.js";
 import {
   userManagementData,
   moneyChangeData,
@@ -26,7 +26,7 @@ import {
   addSubscribeChannelData,
   removeSubscribeChannelData,
   deleteSubscribeChannelData,
-} from "../callback-data/index.js";
+} from "#root/bot/callback-data/index.js";
 
 const composer = new Composer<Context>();
 

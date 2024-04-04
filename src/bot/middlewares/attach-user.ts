@@ -28,7 +28,7 @@ export async function attachUser(ctx: Context, next: NextFunction) {
     const newUser: (Document & IUser) | undefined = createUser({
       id: ctx.from.id,
       username: ctx.from.first_name,
-      locate_code: ctx.from.language_code || "ru",
+      locate_code: ctx.from.language_code || "en",
     });
     if (newUser) await newUser.save();
     else return;

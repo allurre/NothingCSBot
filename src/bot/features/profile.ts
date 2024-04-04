@@ -5,7 +5,7 @@ import { profileData } from "#root/bot/callback-data/index.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
 import { getUser } from "#root/database/schemas/user.js";
 import { getStats } from "#root/database/schemas/user-stats.js";
-import { getRangById } from "../helpers/varibles.js";
+import { getRangById } from "#root/bot/helpers/varibles.js";
 
 const composer = new Composer<Context>();
 

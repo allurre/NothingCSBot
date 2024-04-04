@@ -14,11 +14,11 @@ import {
   additionallyChannelData,
   additionallyShootsData,
   claimAdditionallyShootsData,
-} from "../callback-data/index.js";
+} from "#root/bot/callback-data/index.js";
 import {
   createChannelsSubscribeKeyboard,
   createChannelSubscribeKeyboard,
-} from "../keyboards/additionaly.js";
+} from "#root/bot/keyboards/index.js";
 import { isSubscribed } from "../helpers/utils.js";
 
 const composer = new Composer<Context>();

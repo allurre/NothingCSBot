@@ -14,7 +14,7 @@ const ReferralsSchema: Schema = new Schema({
   ],
 });
 
-ReferralsSchema.pre("save", function u(this: Document & IReferrals, next) {
+ReferralsSchema.pre("save", function psave(this: Document & IReferrals, next) {
   cache.add(this._id, this);
   next();
 });

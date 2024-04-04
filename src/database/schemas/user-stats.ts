@@ -12,7 +12,7 @@ const StatsSchema: Schema = new Schema({
   earned: { type: Number, required: true, default: 0 },
 });
 
-StatsSchema.pre("save", function u(this: Document & IUserStats, next) {
+StatsSchema.pre("save", function psave(this: Document & IUserStats, next) {
   cache.add(this._id, this);
   next();
 });

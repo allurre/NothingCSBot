@@ -1,10 +1,10 @@
 import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
+import { shoot } from "#root/bot/helpers/utils.js";
+import { getRangById } from "#root/bot/helpers/varibles.js";
 import { workoutData, shootData } from "#root/bot/callback-data/index.js";
-import { createWorkoutKeyboard } from "../keyboards/workout.js";
-import { shoot } from "../helpers/utils.js";
-import { getRangById } from "../helpers/varibles.js";
+import { createWorkoutKeyboard } from "#root/bot/keyboards/index.js";
 
 const composer = new Composer<Context>();
 
