@@ -4,6 +4,7 @@ import { autoRetry } from "@grammyjs/auto-retry";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { BotConfig, StorageAdapter, Bot as TelegramBot, session } from "grammy";
+import { conversations, createConversation } from "@grammyjs/conversations";
 import {
   adminUserChange,
   adminNewChannel,
@@ -24,7 +25,9 @@ import {
   adminUserShareFeature,
   adminChannelShareFeature,
   additionallyFeature,
+  casesFeature,
 } from "#root/bot/features/index.js";
+import { promocodeConversation } from "#root/bot/conversations/index.js";
 import { errorHandler } from "#root/bot/handlers/index.js";
 import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
 import {
@@ -61,6 +64,7 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(hydrateReply);
   protectedBot.use(hydrate());
   protectedBot.use(attachUser);
+  protectedBot.use(conversations());
   protectedBot.use(
     session({
       initial: () => ({}),
@@ -79,6 +83,8 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(profileFeature);
   protectedBot.use(workoutFeature);
   protectedBot.use(additionallyFeature);
+  protectedBot.use(casesFeature);
+  protectedBot.use(createConversation(promocodeConversation));
 
   if (isMultipleLocales) {
     protectedBot.use(languageFeature);

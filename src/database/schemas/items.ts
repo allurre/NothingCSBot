@@ -2,65 +2,66 @@ import { Schema, model, Document } from "mongoose";
 import { logger } from "#root/logger.js";
 import {
   IUserInventoryItem,
-  ItemRarity,
+  itemRarities,
+  ItemRarityKey,
 } from "../interfaces/user-inventoty-item.js";
-import { LRUCache } from "../cache/cache.js";
-
-const cache = new LRUCache<number, Document & IUserInventoryItem>(100);
 
 const ItemSchema: Schema = new Schema({
-  _id: { type: Number, required: true },
+  _id: { type: String, required: true },
   name: { type: String, required: true, default: 0 },
   price: { type: Number, required: true, default: 0 },
-  rarity: { type: ItemRarity, required: true, default: 0 },
-});
-
-ItemSchema.pre(
-  "save",
-  function psave(this: Document & IUserInventoryItem, next) {
-    cache.add(this._id, this);
-    next();
+  rarity: {
+    type: String,
+    required: true,
+    default: "ARMY",
+    enum: itemRarities,
   },
-);
+  group_drop_chance: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: 0,
+    max: 100,
+  },
+});
 
 const Item = model<IUserInventoryItem>("Item", ItemSchema);
 
 export default Item;
 
 export async function getItem(
-  id: number,
+  id: string,
 ): Promise<(Document & IUserInventoryItem) | undefined> {
   if (!id) {
     logger.error("Item Id is required.");
     return undefined;
   }
 
-  const cached = cache.get(id);
-  if (cached) return cached;
-
   const itemDatabase = await Item.findById(id);
   if (itemDatabase) {
-    cache.add(id, itemDatabase);
-  } else {
-    logger.error("Item is not register.");
-    return undefined;
+    return itemDatabase;
   }
-
-  return itemDatabase;
+  logger.error("Item is not found.");
+  return undefined;
 }
 
-export function createStats(
-  id: number,
+export function createItem(
+  id: string,
+  name: string,
+  price: number,
+  rarity: ItemRarityKey,
 ): (Document & IUserInventoryItem) | undefined {
-  if (!id) {
-    logger.error("New Item Id is required.");
+  if (!id || !name || !price || !rarity) {
+    logger.error("New Item data is required.");
     return undefined;
   }
 
   const itemDatabase = new Item({
     _id: id,
+    name,
+    price,
+    rarity,
   });
 
-  cache.add(id, itemDatabase);
   return itemDatabase;
 }

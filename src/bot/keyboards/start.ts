@@ -3,6 +3,7 @@ import {
   workoutData,
   profileData,
   calibrationData,
+  casesMenuData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 
@@ -23,6 +24,10 @@ export const createStartKeyboard = (ctx: Context) => {
       {
         text: ctx.t("start_buttons.workout"),
         callback_data: workoutData.pack({}),
+      },
+      {
+        text: ctx.t("start_buttons.cases"),
+        callback_data: casesMenuData.pack({}),
       },
     ],
     [

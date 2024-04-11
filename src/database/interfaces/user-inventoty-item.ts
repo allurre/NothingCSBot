@@ -11,8 +11,19 @@ export const ItemRarity = {
 
 export type ItemRarityKey = keyof typeof ItemRarity;
 
+export const itemRarities = [
+  "ARMY",
+  "ARMY_ST",
+  "ILLEGAL",
+  "ILLEGAL_ST",
+  "CLASSIFIED",
+  "CLASSIFIED_ST",
+  "SECRET",
+  "SECRET_ST",
+];
+
 export interface IUserInventoryItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   rarity: ItemRarityKey;

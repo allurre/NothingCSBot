@@ -7,6 +7,7 @@ import {
   additionallyChannelData,
   additionallyShootsData,
   claimAdditionallyShootsData,
+  workoutData,
 } from "../callback-data/index.js";
 
 export const createChannelsSubscribeKeyboard = async (ctx: Context) => {
@@ -34,6 +35,10 @@ export const createChannelsSubscribeKeyboard = async (ctx: Context) => {
     {
       text: ctx.t("additionally_buttons.claim"),
       callback_data: claimAdditionallyShootsData.pack({}),
+    },
+    {
+      text: ctx.t("additionally_buttons.back"),
+      callback_data: workoutData.pack({}),
     },
   ]);
 
