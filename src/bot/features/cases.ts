@@ -9,8 +9,10 @@ import {
 } from "#root/bot/callback-data/index.js";
 import { getCase } from "#root/database/schemas/cases.js";
 import { getItem } from "#root/database/schemas/items.js";
-import { createOpenCaseMenuKeyboard, createRelaseCasesKeyboard } from "../keyboards/case.js";
-import { ItemRarity } from "#root/database/interfaces/user-inventoty-item.js";
+import {
+  createOpenCaseMenuKeyboard,
+  createRelaseCasesKeyboard,
+} from "../keyboards/case.js";
 
 const composer = new Composer<Context>();
 
@@ -42,6 +44,7 @@ feature.callbackQuery(
     if (box === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-box-found"));
     }
+    ctx.answerCallbackQuery();
     return ctx.reply(
       ctx.t("cases.case-menu", {
         name: ctx.t(`${box.id}.name`),
@@ -85,7 +88,7 @@ feature.callbackQuery(
         ${ctx.t("loot.skin")}: ${item.name}
         ${ctx.t("loot.price")}: ${item.price}
         ${ctx.t("loot.quality")}: ${item.rarity.toLowerCase()}
-        ${ctx.t("loot.chance")}: ${ItemRarity[item.rarity]}%
+        ${ctx.t("loot.chance")}: ${item.group_drop_chance}%
       `;
     });
     await Promise.all(itemPromises);

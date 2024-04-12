@@ -97,8 +97,9 @@ additionally_buttons =
 
 cases =
     .main = Кейсы!
-    .case-menu = Кейс {$name}. Стоимость {$price}
-    {description}
+    .case-menu = Кейс: {$name}
+    Стоимость: {$price}
+    {$description}
     .case-open = Октрываю кейс {$name}
     .case-info = Лут в кейсе {$name}
     {$loot}
@@ -125,6 +126,7 @@ cases_buttons =
     .no_cases = Нет кейсов
     .back = Назад
     .info = Подробнее
+    .open = Открыть
 
 
 language = 

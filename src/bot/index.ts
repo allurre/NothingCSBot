@@ -64,7 +64,6 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(hydrateReply);
   protectedBot.use(hydrate());
   protectedBot.use(attachUser);
-  protectedBot.use(conversations());
   protectedBot.use(
     session({
       initial: () => ({}),
@@ -72,6 +71,7 @@ export function createBot(token: string, options: Options = {}) {
     }),
   );
   protectedBot.use(i18n);
+  protectedBot.use(conversations());
   protectedBot.use(ignoreOld(5 * 60));
 
   // Handlers

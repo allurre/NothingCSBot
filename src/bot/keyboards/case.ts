@@ -22,11 +22,12 @@ export const createRelaseCasesKeyboard = async (ctx: Context) => {
       ],
     ]);
   }
+  console.log(allRelaseCases);
   const caseKeyboard = chunk(
-    allRelaseCases.map((cases) => ({
-      text: cases.name,
+    allRelaseCases.map((box) => ({
+      text: ctx.t(`${box.id}.name`),
       callback_data: caseData.pack({
-        id: cases.id,
+        id: box.id,
       }),
     })),
     3,
@@ -37,6 +38,7 @@ export const createRelaseCasesKeyboard = async (ctx: Context) => {
       callback_data: homeData.pack({}),
     },
   ]);
+  console.log(caseKeyboard);
 
   return InlineKeyboard.from(caseKeyboard);
 };

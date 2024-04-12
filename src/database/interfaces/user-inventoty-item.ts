@@ -26,5 +26,6 @@ export interface IUserInventoryItem {
   id: string;
   name: string;
   price: number;
-  rarity: ItemRarityKey;
+  rarity: string;
+  group_drop_chance: number;
 }
