@@ -8,6 +8,7 @@ export const caseData = createCallbackData("case", {
 
 export const caseInfoData = createCallbackData("case-info", {
   id: String,
+  page: Number,
 });
 
 export const caseOpenData = createCallbackData("case-open", {

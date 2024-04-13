@@ -103,6 +103,7 @@ cases =
     .case-open = Октрываю кейс {$name}
     .case-info = Лут в кейсе {$name}
     {$loot}
+    .case-no-info = Нет лута
 
 loot =
     .skin = Скин
@@ -122,11 +123,16 @@ thisboxtest =
     .name = Тестовый кейс
     .description = Описание тестового кейса
 
+randomitem =
+    .name = Рандомный скин просто
+
 cases_buttons =
     .no_cases = Нет кейсов
     .back = Назад
     .info = Подробнее
     .open = Открыть
+    .info-next = >
+    .info-previous = <
 
 
 language = 

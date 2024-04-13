@@ -24,7 +24,6 @@ export const itemRarities = [
 
 export interface IUserInventoryItem {
   id: string;
-  name: string;
   price: number;
   rarity: string;
   group_drop_chance: number;

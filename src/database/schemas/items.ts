@@ -8,7 +8,6 @@ import {
 
 const ItemSchema: Schema = new Schema({
   _id: { type: String, required: true },
-  name: { type: String, required: true, default: 0 },
   price: { type: Number, required: true, default: 0 },
   rarity: {
     type: String,

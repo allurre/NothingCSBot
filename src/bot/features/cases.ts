@@ -10,6 +10,7 @@ import {
 import { getCase } from "#root/database/schemas/cases.js";
 import { getItem } from "#root/database/schemas/items.js";
 import {
+  createInfoMenuKeyboard,
   createOpenCaseMenuKeyboard,
   createRelaseCasesKeyboard,
 } from "../keyboards/case.js";
@@ -75,7 +76,7 @@ feature.callbackQuery(
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
     }
-    const { id: caseId } = caseData.unpack(ctx.callbackQuery.data);
+    const { id: caseId, page } = caseInfoData.unpack(ctx.callbackQuery.data);
     const box = await getCase(caseId);
     if (box === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-box-found"));
@@ -85,19 +86,27 @@ feature.callbackQuery(
       if (!item) return;
 
       return `
-        ${ctx.t("loot.skin")}: ${item.name}
+        ${ctx.t("loot.skin")}: ${ctx.t(`${item.id}.name`)}
         ${ctx.t("loot.price")}: ${item.price}
-        ${ctx.t("loot.quality")}: ${item.rarity.toLowerCase()}
+        ${ctx.t("loot.quality")}: ${ctx.t(`loot.${item.rarity.toLowerCase()}`)}
         ${ctx.t("loot.chance")}: ${item.group_drop_chance}%
       `;
     });
-    await Promise.all(itemPromises);
-    console.log(itemPromises);
-    // СОСТАВИТЬ ТЕКСТ ДЛЯ ИНФОРМАЦИИ О ЛУТЕ
+    const descriptions = await Promise.all(itemPromises);
+    const description = descriptions[page];
+    if (description === undefined) {
+      ctx.answerCallbackQuery();
+      return ctx.reply(ctx.t("cases.case-no-info"));
+    }
+    ctx.answerCallbackQuery();
     return ctx.reply(
       ctx.t("cases.case-info", {
         name: ctx.t(`${box.id}.name`),
+        loot: description.toString(),
       }),
+      {
+        reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
+      },
     );
   },
 );
