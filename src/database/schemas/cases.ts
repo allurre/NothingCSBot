@@ -8,6 +8,7 @@ const CaseSchema: Schema = new Schema({
   can_drop: { type: Boolean, required: true, default: false },
   price: { type: Number, required: true, default: -1 },
   release: { type: Boolean, required: true, default: false },
+  file_id: { type: String, required: false, default: undefined },
 });
 
 const Case = model<ICommonCase>("Case", CaseSchema);

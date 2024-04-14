@@ -4,4 +4,5 @@ export interface ICommonCase {
   can_drop: boolean;
   price: number;
   release: boolean;
+  file_id?: string;
 }

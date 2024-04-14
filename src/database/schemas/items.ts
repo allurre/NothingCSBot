@@ -3,7 +3,6 @@ import { logger } from "#root/logger.js";
 import {
   IUserInventoryItem,
   itemRarities,
-  ItemRarityKey,
 } from "../interfaces/user-inventoty-item.js";
 
 const ItemSchema: Schema = new Schema({
@@ -22,6 +21,7 @@ const ItemSchema: Schema = new Schema({
     min: 0,
     max: 100,
   },
+  file_id: { type: String, required: false, default: undefined },
 });
 
 const Item = model<IUserInventoryItem>("Item", ItemSchema);
@@ -48,7 +48,7 @@ export function createItem(
   id: string,
   name: string,
   price: number,
-  rarity: ItemRarityKey,
+  rarity: string,
 ): (Document & IUserInventoryItem) | undefined {
   if (!id || !name || !price || !rarity) {
     logger.error("New Item data is required.");

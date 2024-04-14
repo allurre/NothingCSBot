@@ -4,6 +4,10 @@ import { IUser } from "#root/database/interfaces/user.js";
 import { IUserInventory } from "#root/database/interfaces/user-inventory.js";
 import { IUserStats } from "#root/database/interfaces/user-stats.js";
 import { Document } from "mongoose";
+import {
+  IUserInventoryItem,
+  rarityChancesMap,
+} from "#root/database/interfaces/user-inventoty-item.js";
 import { getShootChance, shootReward } from "./varibles.js";
 import { hitText } from "./text.js";
 import { i18n } from "../i18n.js";
@@ -17,6 +21,14 @@ export function randomNumber(min: number, max: number): number {
 
 export function randomInt(min: number, max: number): number {
   return Math.round(randomNumber(min, max));
+}
+
+export function getRandom() {
+  const chance = randomInt(0, 100);
+  const rarityKey = Math.max(
+    ...[...rarityChancesMap.keys()].filter((key) => key <= chance),
+  );
+  return rarityChancesMap.get(rarityKey);
 }
 
 function getHitPosition(statusId: number, score: number): number {
@@ -142,4 +154,16 @@ export async function isSubscribed(
     );
     return false;
   }
+}
+
+export function getItemDescription(
+  item: IUserInventoryItem,
+  locateCode: string,
+): string {
+  return `
+      ${i18n.t(locateCode, "loot.skin")}: ${i18n.t(locateCode, `${item.id}.name`)}
+      ${i18n.t(locateCode, "loot.price")}: ${item.price}
+      ${i18n.t(locateCode, "loot.quality")}: ${i18n.t(locateCode, `loot.${item.rarity.toLowerCase()}`)}
+      ${i18n.t(locateCode, "loot.chance")}: ${item.group_drop_chance}%
+    `;
 }

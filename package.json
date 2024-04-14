@@ -33,6 +33,7 @@
     "crypto": "^1.0.1",
     "dotenv": "16.4.5",
     "fastify": "4.26.1",
+    "fs": "^0.0.1-security",
     "grammy": "^1.21.1",
     "grammy-guard": "0.5.0",
     "grammy-middlewares": "^1.0.11",

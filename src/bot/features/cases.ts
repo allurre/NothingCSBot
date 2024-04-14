@@ -13,7 +13,8 @@ import {
   createInfoMenuKeyboard,
   createOpenCaseMenuKeyboard,
   createRelaseCasesKeyboard,
-} from "../keyboards/case.js";
+} from "#root/bot/keyboards/case.js";
+import { getItemDescription } from "../helpers/utils.js";
 
 const composer = new Composer<Context>();
 
@@ -46,6 +47,15 @@ feature.callbackQuery(
       return ctx.answerCallbackQuery(ctx.t("errors.no-box-found"));
     }
     ctx.answerCallbackQuery();
+    if (box.file_id !== undefined) {
+      return ctx.replyWithPhoto(box.file_id, {
+        caption: ctx.t("cases.case-menu", {
+          name: ctx.t(`${box.id}.name`),
+          price: box.price,
+          description: ctx.t(`${box.id}.description`),
+        }),
+      });
+    }
     return ctx.reply(
       ctx.t("cases.case-menu", {
         name: ctx.t(`${box.id}.name`),
@@ -81,25 +91,54 @@ feature.callbackQuery(
     if (box === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-box-found"));
     }
-    const itemPromises = box.loot.map(async (lootId) => {
-      const item = await getItem(lootId);
-      if (!item) return;
-
-      return `
-        ${ctx.t("loot.skin")}: ${ctx.t(`${item.id}.name`)}
-        ${ctx.t("loot.price")}: ${item.price}
-        ${ctx.t("loot.quality")}: ${ctx.t(`loot.${item.rarity.toLowerCase()}`)}
-        ${ctx.t("loot.chance")}: ${item.group_drop_chance}%
-      `;
-    });
-    const descriptions = await Promise.all(itemPromises);
-    const description = descriptions[page];
-    if (description === undefined) {
-      ctx.answerCallbackQuery();
-      return ctx.reply(ctx.t("cases.case-no-info"));
+    const itemId = box.loot[page];
+    const item = await getItem(itemId);
+    if (item === undefined) {
+      return ctx.answerCallbackQuery(ctx.t("cases.case-no-info"));
     }
+    const description = getItemDescription(item, ctx.database.user.locate_code);
     ctx.answerCallbackQuery();
-    return ctx.reply(
+    if (ctx.msg?.photo) {
+      if (item.file_id) {
+        // оправка предмета с фото, если прошлый с фото
+        return ctx.editMessageMedia(
+          {
+            type: "photo",
+            media: item.file_id,
+            caption: ctx.t("cases.case-info", {
+              name: ctx.t(`${box.id}.name`),
+              loot: description.toString(),
+            }),
+          },
+          {
+            reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
+          },
+        );
+      }
+      // оправка предмета без фото, если прошлый с фото
+      ctx.deleteMessage();
+      return ctx.reply(
+        ctx.t("cases.case-info", {
+          name: ctx.t(`${box.id}.name`),
+          loot: description.toString(),
+        }),
+        {
+          reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
+        },
+      );
+    }
+    if (item.file_id) {
+      return ctx.replyWithPhoto(item.file_id, {
+        // оправка предмета с фото, если прошлый без фото
+        caption: ctx.t("cases.case-info", {
+          name: ctx.t(`${box.id}.name`),
+          loot: description.toString(),
+        }),
+        reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
+      });
+    }
+    // оправка предмета без фото, если прошлый без фото
+    return ctx.editMessageText(
       ctx.t("cases.case-info", {
         name: ctx.t(`${box.id}.name`),
         loot: description.toString(),
