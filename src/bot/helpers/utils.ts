@@ -8,6 +8,7 @@ import {
   IUserInventoryItem,
   rarityChancesMap,
 } from "#root/database/interfaces/user-inventoty-item.js";
+import { getItem } from "#root/database/schemas/items.js";
 import { getShootChance, shootReward } from "./varibles.js";
 import { hitText } from "./text.js";
 import { i18n } from "../i18n.js";
@@ -23,12 +24,30 @@ export function randomInt(min: number, max: number): number {
   return Math.round(randomNumber(min, max));
 }
 
-export function getRandom() {
+export function getRandomRarity() {
   const chance = randomInt(0, 100);
   const rarityKey = Math.max(
     ...[...rarityChancesMap.keys()].filter((key) => key <= chance),
   );
-  return rarityChancesMap.get(rarityKey);
+  return rarityChancesMap.get(rarityKey) || "ARMY";
+}
+
+export async function getLootByRarity(
+  requestRarity: string,
+  loot: Array<string>,
+): Promise<IUserInventoryItem[] | undefined> {
+  const items: IUserInventoryItem[] = [];
+  const lootPromises = loot.map(async (itemId) => {
+    const item = await getItem(itemId);
+    if (item && item.rarity === requestRarity) {
+      items.push(item);
+    }
+  });
+  await Promise.all(lootPromises);
+  if (items.length === 0) {
+    return undefined;
+  }
+  return items;
 }
 
 function getHitPosition(statusId: number, score: number): number {

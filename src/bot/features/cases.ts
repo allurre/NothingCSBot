@@ -14,7 +14,11 @@ import {
   createOpenCaseMenuKeyboard,
   createRelaseCasesKeyboard,
 } from "#root/bot/keyboards/case.js";
-import { getItemDescription } from "../helpers/utils.js";
+import {
+  getItemDescription,
+  getLootByRarity,
+  getRandomRarity,
+} from "../helpers/utils.js";
 
 const composer = new Composer<Context>();
 
@@ -76,6 +80,30 @@ feature.callbackQuery(
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
     }
+    const userInventory = ctx.database.inventory;
+    const { id: caseId } = caseOpenData.unpack(ctx.callbackQuery.data);
+    const box = await getCase(caseId);
+    if (box === undefined) {
+      return ctx.answerCallbackQuery(ctx.t("errors.no-box-found"));
+    }
+    if (userInventory.coins < box.price) {
+      const missingCoins = box.price - userInventory.coins;
+      return ctx.answerCallbackQuery(
+        ctx.t("errors.low-user-coins", {
+          coins: missingCoins,
+        }),
+      );
+    }
+    userInventory.coins -= box.price;
+    userInventory.save();
+    ctx.answerCallbackQuery();
+    const getingRarity = getRandomRarity();
+    ctx.reply(ctx.t("cases.open-case"));
+    const lootingItems = await getLootByRarity(getingRarity, box.loot); // это пиздец как долго, так что анимацию запустить до
+    if (lootingItems === undefined) {
+      return ctx.reply(ctx.t("loot.no-looting"));
+    }
+    // получить случайный предмет
   },
 );
 

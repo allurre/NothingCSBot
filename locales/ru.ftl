@@ -104,6 +104,7 @@ cases =
     .case-info = Лут в кейсе {$name}
     {$loot}
     .case-no-info = Нет лута
+    .open-case = Открываю кейс
 
 loot =
     .skin = Скин
@@ -118,6 +119,7 @@ loot =
     .illegal_st = запрещенное СТ
     .classified_st = засекреченное СТ
     .secret_st = тайное СТ
+    .no-looting = Увы, но тут пусто
 
 thisboxtest =
     .name = Тестовый кейс
@@ -221,6 +223,8 @@ errors =
     Используйте /start
     .no-box-found = Кейс не найден. Попробуйте обновить панель.
     Если это не помогло обратитесь в поддержку
+    .low-user-coins = У вас недостаточно монет.
+    Для открытия необходимо ещё {$coins}
 
 unhandled = Неизвестное взаимодействие. Нажмите /start
 
