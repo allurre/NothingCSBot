@@ -13,7 +13,7 @@ import {
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
 import { getAllSubscribeChannels } from "#root/database/schemas/subscribe-channels.js";
-import { chunk } from "../helpers/keyboard.js";
+import { chunk } from "#root/bot/helpers/keyboard.js";
 
 export const createAdminPanelMainKeyboard = (ctx: Context) => {
   return InlineKeyboard.from([

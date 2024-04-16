@@ -5,7 +5,7 @@ import {
   createRegisterKeyboard,
   createStartKeyboard,
 } from "#root/bot/keyboards/index.js";
-import { homeData } from "../callback-data/index.js";
+import { homeData } from "#root/bot/callback-data/index.js";
 
 const composer = new Composer<Context>();
 

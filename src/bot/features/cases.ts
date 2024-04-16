@@ -19,7 +19,7 @@ import {
   getLootByRarity,
   getRandomItem,
   getRandomRarity,
-} from "../helpers/utils.js";
+} from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
 

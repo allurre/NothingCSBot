@@ -19,7 +19,7 @@ import {
   createChannelsSubscribeKeyboard,
   createChannelSubscribeKeyboard,
 } from "#root/bot/keyboards/index.js";
-import { isSubscribed } from "../helpers/utils.js";
+import { isSubscribed } from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
 

@@ -1,14 +1,14 @@
 import { InlineKeyboard } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { getAllReleasedCases, getCase } from "#root/database/schemas/cases.js";
-import { chunk } from "../helpers/keyboard.js";
+import { chunk } from "#root/bot/helpers/keyboard.js";
 import {
   casesMenuData,
   caseInfoData,
   caseData,
   caseOpenData,
   homeData,
-} from "../callback-data/index.js";
+} from "#root/bot/callback-data/index.js";
 
 export const createRelaseCasesKeyboard = async (ctx: Context) => {
   const allRelaseCases = await getAllReleasedCases();

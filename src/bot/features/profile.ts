@@ -9,7 +9,7 @@ import { getRangById } from "#root/bot/helpers/varibles.js";
 import {
   createInventoryKeyboard,
   createProfileKeyboard,
-} from "../keyboards/profile.js";
+} from "#root/bot/keyboards/profile.js";
 
 const composer = new Composer<Context>();
 

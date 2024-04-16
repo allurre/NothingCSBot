@@ -2,13 +2,13 @@ import { InlineKeyboard } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { getAllSubscribeChannels } from "#root/database/schemas/subscribe-channels.js";
 import { ISubscribeChannel } from "#root/database/interfaces/subscribe-channels.js";
-import { chunk } from "../helpers/keyboard.js";
+import { chunk } from "#root/bot/helpers/keyboard.js";
 import {
   additionallyChannelData,
   additionallyShootsData,
   claimAdditionallyShootsData,
   workoutData,
-} from "../callback-data/index.js";
+} from "#root/bot/callback-data/index.js";
 
 export const createChannelsSubscribeKeyboard = async (ctx: Context) => {
   const allChannels = await getAllSubscribeChannels();
