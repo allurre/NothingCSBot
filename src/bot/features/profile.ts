@@ -1,11 +1,15 @@
 import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
-import { profileData } from "#root/bot/callback-data/index.js";
+import { inventoryData, profileData } from "#root/bot/callback-data/index.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
 import { getUser } from "#root/database/schemas/user.js";
 import { getStats } from "#root/database/schemas/user-stats.js";
 import { getRangById } from "#root/bot/helpers/varibles.js";
+import {
+  createInventoryKeyboard,
+  createProfileKeyboard,
+} from "../keyboards/profile.js";
 
 const composer = new Composer<Context>();
 
@@ -33,6 +37,9 @@ feature.command("profile", logHandle("command-profile"), async (ctx) => {
       coins: userInventory.coins,
       accuracy: userStats.headshots / userStats.shoots,
     }),
+    {
+      reply_markup: createProfileKeyboard(ctx, userId),
+    },
   );
 });
 
@@ -43,6 +50,7 @@ feature.callbackQuery(
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
     }
+    const userId = ctx.from.id;
     const userInventory = ctx.database.inventory;
     const userDatabase = ctx.database.user;
     const userStats = ctx.database.stats;
@@ -56,6 +64,31 @@ feature.callbackQuery(
         coins: userInventory.coins,
         accuracy: userStats.headshots / userStats.shoots,
       }),
+      {
+        reply_markup: createProfileKeyboard(ctx, userId),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  inventoryData.filter(),
+  logHandle("keyboard-inventory-select"),
+  async (ctx) => {
+    if (ctx.database === undefined) {
+      return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
+    }
+    const userId = ctx.from.id;
+    const userInventory = ctx.database.inventory;
+    const _userDatabase = ctx.database.user;
+    ctx.answerCallbackQuery();
+    ctx.reply(
+      ctx.t("profile.inventory", {
+        id: userInventory.id,
+      }),
+      {
+        reply_markup: createInventoryKeyboard(ctx, userId),
+      },
     );
   },
 );

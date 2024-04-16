@@ -31,6 +31,10 @@ start_buttons =
         .workout = 🔝 Тренировка
         .cases = Кейсы
 
+default_buttons = 
+        .home = Домой
+        .back = Назад
+
 calibration =
         .end = ✔️ Калибровка завершена!
 
@@ -59,7 +63,6 @@ workout =
 workout_buttons = 
         .shoot = Стрелять
         .additionally = Мишени
-        .home = Назад
 
 shoot = 
         .no-targets = У вас нет мишеней!
@@ -76,6 +79,12 @@ profile =
         Ранг: {$rang}
         Монетки: {$coins}
         Точность: {$accuracy}
+        .inventory = Инветнарь пользователя {$id}
+
+profile_buttons = 
+        .inventory = Инвентарь
+        .items-next = >
+        .items-previous = <
 
 additionally =
         .main = Доп. каналы!
@@ -92,7 +101,6 @@ additionally =
 additionally_buttons = 
         .claim = Собрать
         .subscribe = Подписаться
-        .back = Назад
         .no_channels = Нет каналов
 
 cases =
@@ -136,7 +144,6 @@ randomitem1 =
 
 cases_buttons =
     .no_cases = Нет кейсов
-    .back = Назад
     .info = Подробнее
     .open = Открыть
     .info-next = >

@@ -20,6 +20,12 @@ export const createChannelsSubscribeKeyboard = async (ctx: Context) => {
           callback_data: "no-data-here",
         },
       ],
+      [
+        {
+          text: ctx.t("default_buttons.back"),
+          callback_data: workoutData.pack({}),
+        },
+      ],
     ]);
   }
   const channelsKeyboard = chunk(
@@ -37,7 +43,7 @@ export const createChannelsSubscribeKeyboard = async (ctx: Context) => {
       callback_data: claimAdditionallyShootsData.pack({}),
     },
     {
-      text: ctx.t("additionally_buttons.back"),
+      text: ctx.t("default_buttons.back"),
       callback_data: workoutData.pack({}),
     },
   ]);
@@ -58,7 +64,7 @@ export const createChannelSubscribeKeyboard = async (
     ],
     [
       {
-        text: ctx.t("additionally_buttons.back"),
+        text: ctx.t("default_buttons.back"),
         callback_data: additionallyShootsData.pack({}),
       },
     ],

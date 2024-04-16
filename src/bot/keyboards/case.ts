@@ -34,7 +34,7 @@ export const createRelaseCasesKeyboard = async (ctx: Context) => {
   );
   caseKeyboard.push([
     {
-      text: ctx.t("cases_buttons.back"),
+      text: ctx.t("default_buttons.home"),
       callback_data: homeData.pack({}),
     },
   ]);
@@ -52,7 +52,7 @@ export const createOpenCaseMenuKeyboard = async (
     return InlineKeyboard.from([
       [
         {
-          text: ctx.t("cases_buttons.back"),
+          text: ctx.t("default_buttons.back"),
           callback_data: casesMenuData.pack({}),
         },
       ],
@@ -78,7 +78,7 @@ export const createOpenCaseMenuKeyboard = async (
     ],
     [
       {
-        text: ctx.t("cases_buttons.back"),
+        text: ctx.t("default_buttons.back"),
         callback_data: casesMenuData.pack({}),
       },
     ],
@@ -111,7 +111,7 @@ export const createInfoMenuKeyboard = async (
     ],
     [
       {
-        text: ctx.t("cases_buttons.back"),
+        text: ctx.t("default_buttons.back"),
         callback_data: caseData.pack({
           id: caseId,
         }),

@@ -22,7 +22,7 @@ export const createWorkoutKeyboard = (ctx: Context) => {
     ],
     [
       {
-        text: ctx.t("workout_buttons.home"),
+        text: ctx.t("default_buttons.home"),
         callback_data: homeData.pack({}),
       },
     ],
