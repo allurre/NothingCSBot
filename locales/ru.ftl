@@ -120,6 +120,9 @@ loot =
     .classified_st = засекреченное СТ
     .secret_st = тайное СТ
     .no-looting = Увы, но тут пусто
+    .drop = {$name}
+    Качество: {$rarity}
+    Цена: {$price}
 
 thisboxtest =
     .name = Тестовый кейс
@@ -127,6 +130,9 @@ thisboxtest =
 
 randomitem =
     .name = Рандомный скин просто
+
+randomitem1 = 
+    .name = Еще рандом скин
 
 cases_buttons =
     .no_cases = Нет кейсов

@@ -9,7 +9,7 @@ const InventorySchema: Schema = new Schema({
   _id: { type: Number, required: true },
   coins: { type: Number, required: true, default: 0 },
   targets: { type: Number, required: true, default: 0 },
-  items: [{ type: Number, required: true }],
+  items: [{ type: String, required: true }],
 });
 
 InventorySchema.pre(

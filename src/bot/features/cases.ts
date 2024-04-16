@@ -17,6 +17,7 @@ import {
 import {
   getItemDescription,
   getLootByRarity,
+  getRandomItem,
   getRandomRarity,
 } from "../helpers/utils.js";
 
@@ -95,7 +96,7 @@ feature.callbackQuery(
       );
     }
     userInventory.coins -= box.price;
-    userInventory.save();
+    await userInventory.save();
     ctx.answerCallbackQuery();
     const getingRarity = getRandomRarity();
     ctx.reply(ctx.t("cases.open-case"));
@@ -103,7 +104,28 @@ feature.callbackQuery(
     if (lootingItems === undefined) {
       return ctx.reply(ctx.t("loot.no-looting"));
     }
-    // получить случайный предмет
+    const dropedItem = getRandomItem(lootingItems);
+    if (dropedItem === undefined) {
+      return ctx.reply(ctx.t("loot.no-looting"));
+    }
+    userInventory.items.push(dropedItem.id);
+    await userInventory.save();
+    if (dropedItem.file_id === undefined) {
+      return ctx.reply(
+        ctx.t("loot.drop", {
+          name: ctx.t(`${dropedItem.id}.name`),
+          price: dropedItem.price,
+          rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
+        }),
+      );
+    }
+    return ctx.replyWithPhoto(dropedItem.file_id, {
+      caption: ctx.t("loot.drop", {
+        name: ctx.t(`${dropedItem.id}.name`),
+        price: dropedItem.price,
+        rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
+      }),
+    });
   },
 );
 

@@ -32,6 +32,27 @@ export function getRandomRarity() {
   return rarityChancesMap.get(rarityKey) || "ARMY";
 }
 
+export function getRandomItem(
+  items: IUserInventoryItem[],
+): IUserInventoryItem | undefined {
+  let totalChance = 0;
+  const chances = items.map((item) => {
+    totalChance += item.group_drop_chance;
+    return {
+      item,
+      accumulatedChance: totalChance,
+    };
+  });
+  const randomChance = Math.random() * totalChance;
+  const selectedItem = chances.find(
+    (chance) => randomChance <= chance.accumulatedChance,
+  );
+  if (selectedItem === undefined) {
+    return;
+  }
+  return selectedItem.item;
+}
+
 export async function getLootByRarity(
   requestRarity: string,
   loot: Array<string>,
