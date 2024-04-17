@@ -197,9 +197,12 @@ admin_buttons =
     .add-channel = Добавить канал
     .remove-channel = Удалить канал
     .no_channels = Нет каналов
-    .mange-user = Управление пользователями
-    .mange-item = Управление предметами
-    .mange-subscribe-channels = Управление доп. каналами
+    .manage-user = Управление пользователями
+    .manage-subscribe-channels = Управление доп. каналами
+    .manage-item = Управление предметами
+    .manage-cases = Управление кейсами
+    .manage-notifications = Управление уведомлениями
+    .manage-mailing = Рассылка
 
 notifications =
     .money_change = Ваши монетки изменены

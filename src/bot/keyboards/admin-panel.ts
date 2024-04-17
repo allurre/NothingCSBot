@@ -4,11 +4,14 @@ import {
   shootChangeData,
   statusChangeData,
   userManagementData,
-  itemManagementData,
+  itemsManagementData,
+  casesManagementData,
   subscribeChannelsManagementData,
   addSubscribeChannelData,
   deleteSubscribeChannelData,
   removeSubscribeChannelData,
+  notificationsManagementData,
+  mailingManagementData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
@@ -19,18 +22,34 @@ export const createAdminPanelMainKeyboard = (ctx: Context) => {
   return InlineKeyboard.from([
     [
       {
-        text: ctx.t("admin_buttons.mange-user"),
+        text: ctx.t("admin_buttons.manage-user"),
         callback_data: userManagementData.pack({}),
       },
       {
-        text: ctx.t("admin_buttons.mange-subscribe-channels"),
+        text: ctx.t("admin_buttons.manage-subscribe-channels"),
         callback_data: subscribeChannelsManagementData.pack({}),
       },
     ],
     [
       {
-        text: ctx.t("admin_buttons.mange-item"),
-        callback_data: itemManagementData.pack({}),
+        text: ctx.t("admin_buttons.manage-cases"),
+        callback_data: casesManagementData.pack({}),
+      },
+      {
+        text: ctx.t("admin_buttons.manage-item"),
+        callback_data: itemsManagementData.pack({}),
+      },
+    ],
+    [
+      {
+        text: ctx.t("admin_buttons.manage-notifications"),
+        callback_data: notificationsManagementData.pack({}),
+      },
+    ],
+    [
+      {
+        text: ctx.t("admin_buttons.manage-mailing"),
+        callback_data: mailingManagementData.pack({}),
       },
     ],
   ]);

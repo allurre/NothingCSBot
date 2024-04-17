@@ -25,10 +25,28 @@ export const deleteSubscribeChannelData = createCallbackData(
     id: Number,
   },
 );
+export const addItemData = createCallbackData("add-item", {});
+export const deleteItemData = createCallbackData("delete-item", {});
+export const editItemData = createCallbackData("edit-item", {
+  id: String,
+});
+export const addCaseData = createCallbackData("add-case", {});
+export const editCaseData = createCallbackData("edit-case", {
+  id: String,
+});
 
 export const userManagementData = createCallbackData("user-management", {});
-export const itemManagementData = createCallbackData("item-management", {});
 export const subscribeChannelsManagementData = createCallbackData(
   "subscribe-channels-management",
+  {},
+);
+export const itemsManagementData = createCallbackData("items-management", {});
+export const casesManagementData = createCallbackData("cases-management", {});
+export const notificationsManagementData = createCallbackData(
+  "notifications-management",
+  {},
+);
+export const mailingManagementData = createCallbackData(
+  "mailing-management",
   {},
 );

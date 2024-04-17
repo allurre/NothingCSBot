@@ -11,7 +11,10 @@ async function promocodeUsege(conversation: Conversation, ctx: Context) {
     return promocodeUsege(conversation, ctx);
   }
   const promocode = await getPromocode(message.text);
-  ctx.reply(promocode?.code || "ZZZZZZ");
+  if (promocode === undefined) {
+    return ctx.reply(ctx.t("promocode.use-no_promocode"));
+  }
+  ctx.reply(promocode.code);
 }
 
 export { promocodeUsege as promocodeConversation };

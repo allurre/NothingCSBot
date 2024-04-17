@@ -72,7 +72,7 @@ export function createBot(token: string, options: Options = {}) {
   );
   protectedBot.use(i18n);
   protectedBot.use(conversations());
-  protectedBot.use(ignoreOld(5 * 60));
+  protectedBot.use(ignoreOld(60 * 60));
 
   // Handlers
   protectedBot.use(adminUserShareFeature);
