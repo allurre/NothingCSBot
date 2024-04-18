@@ -202,6 +202,7 @@ admin_buttons =
     .manage-item = Управление предметами
     .manage-cases = Управление кейсами
     .manage-notifications = Управление уведомлениями
+    .manage-promocodes = Управление промокодами
     .manage-mailing = Рассылка
 
 notifications =

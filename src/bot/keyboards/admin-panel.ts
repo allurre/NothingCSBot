@@ -12,6 +12,7 @@ import {
   removeSubscribeChannelData,
   notificationsManagementData,
   mailingManagementData,
+  promocodesManagementData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
@@ -25,6 +26,8 @@ export const createAdminPanelMainKeyboard = (ctx: Context) => {
         text: ctx.t("admin_buttons.manage-user"),
         callback_data: userManagementData.pack({}),
       },
+    ],
+    [
       {
         text: ctx.t("admin_buttons.manage-subscribe-channels"),
         callback_data: subscribeChannelsManagementData.pack({}),
@@ -38,6 +41,12 @@ export const createAdminPanelMainKeyboard = (ctx: Context) => {
       {
         text: ctx.t("admin_buttons.manage-item"),
         callback_data: itemsManagementData.pack({}),
+      },
+    ],
+    [
+      {
+        text: ctx.t("admin_buttons.manage-promocodes"),
+        callback_data: promocodesManagementData.pack({}),
       },
     ],
     [

@@ -8,7 +8,7 @@ const cache = new LRUCache<string, Document & IPromocode>(100);
 const PromocodeSchema: Schema = new Schema({
   _id: { type: String, required: true },
   activations: { type: Number, required: true },
-  uses: { type: Number, required: true, default: 0 },
+  activated: { type: Number, required: true, default: 0 },
   express_at: { type: Date, required: true, default: new Date(0, 0) },
   count: { type: Number, required: true, default: 1 },
   type_id: { type: Number, required: true, default: 1 },
@@ -20,7 +20,7 @@ PromocodeSchema.pre("save", function psave(this: Document & IPromocode, next) {
 });
 
 PromocodeSchema.methods.useage = async function promoUse() {
-  this.uses += 1;
+  this.activated += 1;
   await this.save({ validateBeforeSave: false });
 };
 

@@ -9,6 +9,7 @@ import {
   rarityChancesMap,
 } from "#root/database/interfaces/user-inventoty-item.js";
 import { getItem } from "#root/database/schemas/items.js";
+import { IPromocode } from "#root/database/interfaces/promocode.js";
 import { getShootChance, shootReward } from "./varibles.js";
 import { hitText } from "./text.js";
 import { i18n } from "../i18n.js";
@@ -206,4 +207,15 @@ export function getItemDescription(
       ${i18n.t(locateCode, "loot.quality")}: ${i18n.t(locateCode, `loot.${item.rarity.toLowerCase()}`)}
       ${i18n.t(locateCode, "loot.chance")}: ${item.group_drop_chance}%
     `;
+}
+
+export function validatePromocodeUsage(promocode: IPromocode) {
+  const now = new Date();
+  if (promocode.express_at < now) {
+    return { can_use: false, reason: "promocode.use-no_promocode" };
+  }
+  if (promocode.activated >= promocode.activations) {
+    return { can_use: false, reason: "promocode.use-no_promocode" };
+  }
+  return { can_use: true };
 }

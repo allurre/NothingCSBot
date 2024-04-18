@@ -34,6 +34,10 @@ export const addCaseData = createCallbackData("add-case", {});
 export const editCaseData = createCallbackData("edit-case", {
   id: String,
 });
+export const addPromocodeData = createCallbackData("add-promocode", {});
+export const deletePromocodeData = createCallbackData("delete-promocode", {
+  id: String,
+});
 
 export const userManagementData = createCallbackData("user-management", {});
 export const subscribeChannelsManagementData = createCallbackData(
@@ -48,5 +52,9 @@ export const notificationsManagementData = createCallbackData(
 );
 export const mailingManagementData = createCallbackData(
   "mailing-management",
+  {},
+);
+export const promocodesManagementData = createCallbackData(
+  "promocodes-management",
   {},
 );

@@ -1,6 +1,7 @@
 import { Context } from "#root/bot/context.js";
 import { Conversation } from "#root/bot/conversation.js";
 import { getPromocode } from "#root/database/schemas/promocode.js";
+import { validatePromocodeUsage } from "#root/bot/helpers/utils.js";
 
 async function promocodeUsege(conversation: Conversation, ctx: Context) {
   const { message } = await conversation.wait();
@@ -14,7 +15,14 @@ async function promocodeUsege(conversation: Conversation, ctx: Context) {
   if (promocode === undefined) {
     return ctx.reply(ctx.t("promocode.use-no_promocode"));
   }
-  ctx.reply(promocode.code);
+  const promoUsage = validatePromocodeUsage(promocode);
+  if (promoUsage.can_use === false) {
+    if (promoUsage.reason === undefined) {
+      return ctx.reply(ctx.t("promocode.use-no_promocode"));
+    }
+    return ctx.reply(ctx.t(promoUsage.reason));
+  }
+  // начисление за использование
 }
 
 export { promocodeUsege as promocodeConversation };
