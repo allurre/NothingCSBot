@@ -16,6 +16,8 @@ const createConfigFromEnvironment = (environment: NodeJS.ProcessEnv) => {
         development: "polling" as const,
       },
     },
+    BOT_USERNAME: z.string(),
+    BOT_LINK: z.string().url(),
     BOT_TOKEN: z.string(),
     BOT_WEBHOOK: z.string().default(""),
     BOT_SERVER_HOST: z.string().default("0.0.0.0"),

@@ -6,7 +6,10 @@ import { isAdmin } from "#root/bot/filters/index.js";
 import { setCommandsHandler } from "#root/bot/handlers/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
-import { adminUserChange } from "#root/bot/statelessquestion/admin.js";
+import {
+  adminNewCase,
+  adminUserChange,
+} from "#root/bot/statelessquestion/admin.js";
 import {
   getAllSubscribeChannels,
   removeSubscribeChannel,
@@ -17,8 +20,11 @@ import {
   createChannelsManageKeyboard,
   createUserPickKeyboard,
   createChannelsRemoveKeyboard,
+  createCasesManageKeyboard,
+  createItemsManageKeyboard,
 } from "#root/bot/keyboards/index.js";
 import {
+  adminPanelData,
   userManagementData,
   moneyChangeData,
   shootChangeData,
@@ -26,7 +32,13 @@ import {
   addSubscribeChannelData,
   removeSubscribeChannelData,
   deleteSubscribeChannelData,
+  casesManagementData,
+  addCaseData,
+  itemsManagementData,
 } from "#root/bot/callback-data/index.js";
+import { getAllCases } from "#root/database/schemas/cases.js";
+import { config } from "#root/config.js";
+import { getAllItems } from "#root/database/schemas/items.js";
 
 const composer = new Composer<Context>();
 
@@ -46,6 +58,17 @@ feature.command("panel", logHandle("command-admin-panel"), async (ctx) => {
 });
 
 feature.callbackQuery(
+  adminPanelData.filter(),
+  logHandle("keyboard-usermanage-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    ctx.editMessageText(ctx.t("admin.panel-main"), {
+      reply_markup: createAdminPanelMainKeyboard(ctx),
+    });
+  },
+);
+
+feature.callbackQuery(
   userManagementData.filter(),
   logHandle("keyboard-usermanage-select"),
   async (ctx) => {
@@ -63,24 +86,86 @@ feature.callbackQuery(
     ctx.answerCallbackQuery();
     const allChannels = await getAllSubscribeChannels();
     if (allChannels === undefined) {
-      return ctx.reply(ctx.t("errors.an-error-has-occurred"));
+      return ctx.reply(ctx.t("admin.panel-no_channels"));
     }
     const channelsText =
-      allChannels.length > 0
-        ? allChannels
+      allChannels.length === 0
+        ? undefined
+        : allChannels
             .map(
               (channel) =>
                 `${channel.id}) <a href="${channel.url}">${channel.name}</a> - ${channel.adding}`,
             )
-            .join("\n")
-        : "";
+            .join("\n");
 
-    ctx.reply(
+    ctx.editMessageText(
       ctx.t("admin.panel-channels_manage", {
         channels: channelsText || ctx.t("admin.panel-no_channels"),
       }),
       {
         reply_markup: createChannelsManageKeyboard(ctx),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  casesManagementData.filter(),
+  logHandle("keyboard-casesmangae-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    const allCases = await getAllCases();
+    if (allCases === undefined) {
+      return ctx.reply(ctx.t("admin.panel-no_cases"));
+    }
+    const casesText =
+      allCases.length === 0
+        ? undefined
+        : allCases
+            .map((box) => {
+              const link = box.release
+                ? `<a href="${config.BOT_LINK}?start=a-case-unrel-${box.id}">${ctx.t("cases.unrelase")}</a>`
+                : `<a href="${config.BOT_LINK}?start=a-case-rel-${box.id}">${ctx.t("cases.relase")}</a>`;
+              return `${ctx.t(`${box.id}.name`)} - ${link}`;
+            })
+            .join("\n");
+
+    ctx.editMessageText(
+      ctx.t("admin.panel-manage_cases", {
+        cases: casesText || ctx.t("admin.panel-no_cases"),
+      }),
+      {
+        reply_markup: await createCasesManageKeyboard(ctx),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  itemsManagementData.filter(),
+  logHandle("keyboard-itemsmanage-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    const allItems = await getAllItems();
+    if (allItems === undefined) {
+      return ctx.reply(ctx.t("admin.panel-no_items"));
+    }
+    const itemsText =
+      allItems.length === 0
+        ? undefined
+        : allItems
+            .map((item) => {
+              const link = `<a href="${config.BOT_LINK}?start=a-item-${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
+              return `${link}`;
+            })
+            .join("\n");
+
+    ctx.editMessageText(
+      ctx.t("admin.panel-manage_items", {
+        items: itemsText || ctx.t("admin.panel-items_manage"),
+      }),
+      {
+        reply_markup: await createItemsManageKeyboard(ctx),
       },
     );
   },
@@ -102,7 +187,7 @@ feature.callbackQuery(
   logHandle("keyboard-removesubscribechannels-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
-    ctx.reply(ctx.t("admin.panel-remove_channel"), {
+    ctx.editMessageText(ctx.t("admin.panel-remove_channel"), {
       reply_markup: await createChannelsRemoveKeyboard(ctx),
     });
   },
@@ -126,6 +211,9 @@ feature.callbackQuery(
         reply_markup: { remove_keyboard: true },
       });
     }
+    ctx.reply(ctx.t("admin.panel-main"), {
+      reply_markup: createAdminPanelMainKeyboard(ctx),
+    });
   },
 );
 
@@ -194,6 +282,22 @@ feature.callbackQuery(
     ctx.reply(ctx.t("admin.panel-sucsess"), {
       reply_markup: { remove_keyboard: true },
     });
+  },
+);
+
+feature.callbackQuery(
+  addCaseData.filter(),
+  logHandle("keyboard-caseadd-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    ctx.reply(
+      ctx.t("admin.panel-add_case") + adminNewCase.messageSuffixHTML(),
+      {
+        reply_markup: {
+          force_reply: true,
+        },
+      },
+    );
   },
 );
 

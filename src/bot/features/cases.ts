@@ -99,7 +99,7 @@ feature.callbackQuery(
     await userInventory.save();
     ctx.answerCallbackQuery();
     const getingRarity = getRandomRarity();
-    ctx.reply(ctx.t("cases.open-case"));
+    ctx.reply(ctx.t("cases.case-open"));
     const lootingItems = await getLootByRarity(getingRarity, box.loot); // это пиздец как долго, так что анимацию запустить до
     if (lootingItems === undefined) {
       return ctx.reply(ctx.t("loot.no-looting"));

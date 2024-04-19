@@ -8,6 +8,7 @@ import { conversations, createConversation } from "@grammyjs/conversations";
 import {
   adminUserChange,
   adminNewChannel,
+  adminNewCase,
 } from "#root/bot/statelessquestion/admin.js";
 import {
   Context,
@@ -92,6 +93,7 @@ export function createBot(token: string, options: Options = {}) {
 
   protectedBot.use(adminUserChange.middleware());
   protectedBot.use(adminNewChannel.middleware());
+  protectedBot.use(adminNewCase.middleware());
 
   // must be the last handler
   protectedBot.use(unhandledFeature);

@@ -64,3 +64,10 @@ export function createItem(
 
   return itemDatabase;
 }
+
+export async function getAllItems(): Promise<
+  Array<Document & IUserInventoryItem> | undefined
+> {
+  const allItems = await Item.find();
+  return allItems;
+}

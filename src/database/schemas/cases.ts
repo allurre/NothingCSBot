@@ -34,9 +34,8 @@ export async function getCase(
 export function createCase(
   id: string,
   name: string,
-  price: number,
 ): (Document & ICommonCase) | undefined {
-  if (!id || !name || !price) {
+  if (!id || !name) {
     logger.error("New Case data is required.");
     return undefined;
   }
@@ -44,7 +43,6 @@ export function createCase(
   const caseDatabase = new Case({
     _id: id,
     name,
-    price,
   });
   return caseDatabase;
 }

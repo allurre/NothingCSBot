@@ -108,11 +108,12 @@ cases =
     .case-menu = Кейс: {$name}
     Стоимость: {$price}
     {$description}
-    .case-open = Октрываю кейс {$name}
+    .case-open = Октрываю кейс
     .case-info = Лут в кейсе {$name}
     {$loot}
     .case-no-info = Нет лута
-    .open-case = Открываю кейс
+    .unrelase = снять с релиза
+    .relase = поставить на релиз
 
 loot =
     .skin = Скин
@@ -168,6 +169,10 @@ admin =
     .panel-pick_user = Выберите пользователя
     .panel-change_user = Изменение пользователя
     Имя пользователя: {$user}
+    .money-choose = Укажите количество монеток и комментарий в формате
+    новое кол-во монеток/комментарий
+    .targets-choose = Укажите количество мишеней и комментарий в формате
+    новое кол-во мишеней/комментарий
     .panel-channels_manage = Управление каналами с подпиской
     Текущие каналы:
     {$channels}
@@ -181,11 +186,14 @@ admin =
     Чат является каналом
     Бот является админом этого канала
     Этого канала нет в доп. каналах
+    .panel-manage_cases = Все кейсы
+    {$cases}
+    .panel-no_cases = Нет кейсов
+    .panel-add_case = Добавить кейс
+    .panel-manage_items = Управление предметами
+    {$items}
+    .panel-no_items = Нет предметов
     .panel-sucsess = Успешно
-    .money-choose = Укажите количество монеток и комментарий в формате
-    новое кол-во монеток/комментарий
-    .targets-choose = Укажите количество мишеней и комментарий в формате
-    новое кол-во мишеней/комментарий
 
 admin_buttons =
     .choose-user = Получить пользователя
@@ -197,6 +205,10 @@ admin_buttons =
     .add-channel = Добавить канал
     .remove-channel = Удалить канал
     .no_channels = Нет каналов
+    .case-add = Добавить кейс
+    .case-edit = Редактировать кейс
+    .item-add = Добавить предмет
+    .item-delete = Удалить предмет
     .manage-user = Управление пользователями
     .manage-subscribe-channels = Управление доп. каналами
     .manage-item = Управление предметами

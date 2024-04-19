@@ -1,5 +1,6 @@
 import { createCallbackData } from "callback-data";
 
+export const adminPanelData = createCallbackData("money-change", {});
 export const moneyChangeData = createCallbackData("money-change", {
   id: Number,
   count: Number,
@@ -31,6 +32,7 @@ export const editItemData = createCallbackData("edit-item", {
   id: String,
 });
 export const addCaseData = createCallbackData("add-case", {});
+export const editCaseMenuData = createCallbackData("edit-case-menu", {});
 export const editCaseData = createCallbackData("edit-case", {
   id: String,
 });
