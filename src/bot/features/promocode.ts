@@ -36,3 +36,5 @@ feature.callbackQuery(
     }
   },
 );
+
+export { composer as promocodeFeature };

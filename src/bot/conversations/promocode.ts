@@ -1,7 +1,7 @@
 import { Context } from "#root/bot/context.js";
 import { Conversation } from "#root/bot/conversation.js";
 import { getPromocode } from "#root/database/schemas/promocode.js";
-import { validatePromocodeUsage } from "#root/bot/helpers/utils.js";
+import { validatePromocodeUsage } from "#root/bot/helpers/validator.js";
 
 async function promocodeUsege(conversation: Conversation, ctx: Context) {
   const { message } = await conversation.wait();

@@ -19,7 +19,7 @@ import {
   adminFeature,
   languageFeature,
   unhandledFeature,
-  welcomeFeature,
+  startFeature,
   calibrationFeature,
   profileFeature,
   workoutFeature,
@@ -27,6 +27,7 @@ import {
   adminChannelShareFeature,
   additionallyFeature,
   casesFeature,
+  promocodeFeature,
 } from "#root/bot/features/index.js";
 import { promocodeConversation } from "#root/bot/conversations/index.js";
 import { errorHandler } from "#root/bot/handlers/index.js";
@@ -78,13 +79,14 @@ export function createBot(token: string, options: Options = {}) {
   // Handlers
   protectedBot.use(adminUserShareFeature);
   protectedBot.use(adminChannelShareFeature);
-  protectedBot.use(welcomeFeature);
+  protectedBot.use(startFeature);
   protectedBot.use(calibrationFeature);
   protectedBot.use(adminFeature);
   protectedBot.use(profileFeature);
   protectedBot.use(workoutFeature);
   protectedBot.use(additionallyFeature);
   protectedBot.use(casesFeature);
+  protectedBot.use(promocodeFeature);
   protectedBot.use(createConversation(promocodeConversation));
 
   if (isMultipleLocales) {

@@ -56,4 +56,4 @@ feature.callbackQuery(
   },
 );
 
-export { composer as welcomeFeature };
+export { composer as startFeature };
