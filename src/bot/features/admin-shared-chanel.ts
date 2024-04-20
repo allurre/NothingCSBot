@@ -13,7 +13,7 @@ feature.on(":chat_shared", logHandle("admin-chatshare"), async (ctx) => {
   const reqwest = ctx.message.chat_shared.request_id;
   switch (reqwest) {
     case 1001: {
-      const selectChatId = ctx.message.chat_shared.chat_id; // добавить проверку на существование в доп каналах
+      const selectChatId = ctx.message.chat_shared.chat_id;
       const allChannels = await getAllSubscribeChannels();
       if (allChannels === undefined) {
         return ctx.reply(ctx.t("errors.an-error-has-occurred"));

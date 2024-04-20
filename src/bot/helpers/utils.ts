@@ -9,11 +9,11 @@ import {
   rarityChancesMap,
 } from "#root/database/interfaces/user-inventoty-item.js";
 import { getItem } from "#root/database/schemas/items.js";
-import { IPromocode } from "#root/database/interfaces/promocode.js";
-import { getShootChance, shootReward } from "./varibles.js";
-import { hitText } from "./text.js";
-import { i18n } from "../i18n.js";
-import { Context } from "../context.js";
+import { getShootChance, shootReward } from "#root/bot/helpers/varibles.js";
+import { executeStartPromocode } from "#root/bot/handlers/start/promocode.js";
+import { hitText } from "#root/bot/helpers/text.js";
+import { i18n } from "#root/bot/i18n.js";
+import { Context } from "#root/bot/context.js";
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
@@ -25,7 +25,7 @@ export function randomInt(min: number, max: number): number {
   return Math.round(randomNumber(min, max));
 }
 
-export function getRandomRarity() {
+export function getRandomRarity(): string {
   const chance = randomInt(0, 100);
   const rarityKey = Math.max(
     ...[...rarityChancesMap.keys()].filter((key) => key <= chance),
@@ -179,7 +179,7 @@ export async function isSubscribed(
   ctx: Context,
   channelId: number,
   userId: number,
-) {
+): Promise<boolean> {
   try {
     const userMember = await ctx.api.getChatMember(channelId, userId);
     const isMember = ["member", "administrator", "creator"].includes(
@@ -209,13 +209,18 @@ export function getItemDescription(
     `;
 }
 
-export function validatePromocodeUsage(promocode: IPromocode) {
-  const now = new Date();
-  if (promocode.express_at < now) {
-    return { can_use: false, reason: "promocode.use-no_promocode" };
+export function executeStartMatch(
+  ctx: Context,
+  action: string,
+  arguments_: string,
+) {
+  switch (action) {
+    case "promo": {
+      executeStartPromocode(ctx, arguments_);
+      break;
+    }
+    default: {
+      break;
+    }
   }
-  if (promocode.activated >= promocode.activations) {
-    return { can_use: false, reason: "promocode.use-no_promocode" };
-  }
-  return { can_use: true };
 }

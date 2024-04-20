@@ -3,7 +3,7 @@ import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { promocodeData } from "#root/bot/callback-data/index.js";
 import { getPromocode } from "#root/database/schemas/promocode.js";
-import { validatePromocodeUsage } from "#root/bot/helpers/utils.js";
+import { validatePromocodeUsage } from "#root/bot/helpers/validator.js";
 
 const composer = new Composer<Context>();
 

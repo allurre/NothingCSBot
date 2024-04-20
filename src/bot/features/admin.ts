@@ -124,8 +124,8 @@ feature.callbackQuery(
         : allCases
             .map((box) => {
               const link = box.release
-                ? `<a href="${config.BOT_LINK}?start=a-case-unrel-${box.id}">${ctx.t("cases.unrelase")}</a>`
-                : `<a href="${config.BOT_LINK}?start=a-case-rel-${box.id}">${ctx.t("cases.relase")}</a>`;
+                ? `<a href="${config.BOT_LINK}?start=acase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
+                : `<a href="${config.BOT_LINK}?start=acase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
               return `${ctx.t(`${box.id}.name`)} - ${link}`;
             })
             .join("\n");
@@ -155,7 +155,7 @@ feature.callbackQuery(
         ? undefined
         : allItems
             .map((item) => {
-              const link = `<a href="${config.BOT_LINK}?start=a-item-${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
+              const link = `<a href="${config.BOT_LINK}?start=aitem_${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
               return `${link}`;
             })
             .join("\n");
