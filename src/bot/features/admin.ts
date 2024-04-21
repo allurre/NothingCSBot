@@ -123,10 +123,11 @@ feature.callbackQuery(
         ? undefined
         : allCases
             .map((box) => {
+              const boxText = `<a href="${config.BOT_LINK}?start=acase-edit_${box.id}">${ctx.t(`${box.id}.name`)}</a>`;
               const link = box.release
                 ? `<a href="${config.BOT_LINK}?start=acase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
                 : `<a href="${config.BOT_LINK}?start=acase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
-              return `${ctx.t(`${box.id}.name`)} - ${link}`;
+              return `${boxText} - ${link}`;
             })
             .join("\n");
 

@@ -34,6 +34,10 @@ start_buttons =
 default_buttons = 
     .home = Домой
     .back = Назад
+    .cansel = Отмена
+default =
+    .no = нет
+    .yes = да
 
 calibration =
     .end = ✔️ Калибровка завершена!
@@ -190,6 +194,13 @@ admin =
     {$cases}
     .panel-no_cases = Нет кейсов
     .panel-add_case = Добавить кейс
+    .pannel-edit_case = Редактировать данные кейса {$name}
+    ID: {$id}
+    Цена: {$price}
+    Статус: {$relase}
+    Может выпасть?: {$can_drop}
+    .info-relase = релизнут
+    .info-no_relase = не релизнут
     .panel-manage_items = Управление предметами
     {$items}
     .panel-no_items = Нет предметов
@@ -206,7 +217,8 @@ admin_buttons =
     .remove-channel = Удалить канал
     .no_channels = Нет каналов
     .case-add = Добавить кейс
-    .case-edit = Редактировать кейс
+    .case-edit = Редактировать даннные
+    .loot-edit = Редактировать лут
     .item-add = Добавить предмет
     .item-delete = Удалить предмет
     .manage-user = Управление пользователями
@@ -216,6 +228,7 @@ admin_buttons =
     .manage-notifications = Управление уведомлениями
     .manage-promocodes = Управление промокодами
     .manage-mailing = Рассылка
+    .locale-edit = Локализация
 
 notifications =
     .money_change = Ваши монетки изменены
@@ -259,6 +272,7 @@ errors =
     Если это не помогло обратитесь в поддержку
     .low-user-coins = У вас недостаточно монет.
     Для открытия необходимо ещё {$coins}
+    .loose_data = Данные утеряны
 
 unhandled = Неизвестное взаимодействие. Нажмите /start
 

@@ -6,7 +6,7 @@ import {
   createStartKeyboard,
 } from "#root/bot/keyboards/index.js";
 import { homeData } from "#root/bot/callback-data/index.js";
-import { executeStartMatch } from "../helpers/utils.js";
+import { executeStartMatch } from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
 
@@ -18,8 +18,9 @@ feature.command("start", logHandle("command-start"), async (ctx) => {
   }
   if (ctx.match) {
     const action = ctx.match.split("-")[0];
-    const arguments_ = ctx.match.replace(/^-?\w+/, "");
+    const arguments_ = ctx.match.replace(/^-?\w+-\s*/, "");
     executeStartMatch(ctx, action, arguments_);
+    if (action.startsWith("a")) return ctx.msg.delete();
   }
   const userDatabase = ctx.database.user;
   await (userDatabase.locate_code === undefined

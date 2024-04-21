@@ -19,6 +19,7 @@ import { executeStartPromocode } from "#root/bot/handlers/start/promocode.js";
 import { hitText } from "#root/bot/helpers/text.js";
 import { i18n } from "#root/bot/i18n.js";
 import { Context } from "#root/bot/context.js";
+import { executeAdminCase } from "../handlers/start/admin/cases.js";
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
@@ -270,13 +271,11 @@ export function executeStartMatch(
   action: string,
   arguments_: string,
 ) {
-  switch (action) {
-    case "promo": {
-      executeStartPromocode(ctx, arguments_);
-      break;
-    }
-    default: {
-      break;
-    }
+  if (action.startsWith("acase")) {
+    const caseAction = arguments_.split("_")[0];
+    const caseId = arguments_.split("_")[1];
+    executeAdminCase(ctx, caseAction, caseId);
+  } else if (action === "promo") {
+    executeStartPromocode(ctx, arguments_);
   }
 }

@@ -32,8 +32,13 @@ export const editItemData = createCallbackData("edit-item", {
   id: String,
 });
 export const addCaseData = createCallbackData("add-case", {});
-export const editCaseMenuData = createCallbackData("edit-case-menu", {});
 export const editCaseData = createCallbackData("edit-case", {
+  id: String,
+});
+export const editLootData = createCallbackData("edit-case-loot", {
+  id: String,
+});
+export const editCaseLocaleData = createCallbackData("edit-case-locale", {
   id: String,
 });
 export const addPromocodeData = createCallbackData("add-promocode", {});

@@ -15,9 +15,11 @@ import {
   mailingManagementData,
   promocodesManagementData,
   addCaseData,
-  editCaseMenuData,
   addItemData,
   deleteItemData,
+  editCaseData,
+  editCaseLocaleData,
+  editLootData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
@@ -234,10 +236,6 @@ export const createCasesManageKeyboard = async (ctx: Context) => {
         text: ctx.t("admin_buttons.case-add"),
         callback_data: addCaseData.pack({}),
       },
-      {
-        text: ctx.t("admin_buttons.case-edit"),
-        callback_data: editCaseMenuData.pack({}),
-      },
     ],
     [
       {
@@ -263,6 +261,39 @@ export const createItemsManageKeyboard = async (ctx: Context) => {
     [
       {
         text: ctx.t("default_buttons.back"),
+        callback_data: adminPanelData.pack({}),
+      },
+    ],
+  ]);
+};
+
+export const createCaseEditKeyboard = async (ctx: Context, caseId: string) => {
+  return InlineKeyboard.from([
+    [
+      {
+        text: ctx.t("admin_buttons.case-edit"),
+        callback_data: editCaseData.pack({
+          id: caseId,
+        }),
+      },
+    ],
+    [
+      {
+        text: ctx.t("admin_buttons.loot-edit"),
+        callback_data: editLootData.pack({
+          id: caseId,
+        }),
+      },
+      {
+        text: ctx.t("admin_buttons.locale-edit"),
+        callback_data: editCaseLocaleData.pack({
+          id: caseId,
+        }),
+      },
+    ],
+    [
+      {
+        text: ctx.t("default_buttons.cansel"),
         callback_data: adminPanelData.pack({}),
       },
     ],
