@@ -103,3 +103,24 @@ export const shootReward: { [key: number]: number } = {
   3: 25,
   4: 10,
 };
+
+export const shootsRang = [
+  { shoots: 0, rang: 1 },
+  { shoots: 10, rang: 2 },
+  { shoots: 30, rang: 3 },
+  { shoots: 50, rang: 4 },
+  { shoots: 70, rang: 5 },
+  { shoots: 100, rang: 6 },
+  { shoots: 140, rang: 7 },
+  { shoots: 180, rang: 8 },
+  { shoots: 250, rang: 9 },
+  { shoots: 300, rang: 10 },
+  { shoots: 400, rang: 11 },
+  { shoots: 500, rang: 12 },
+  { shoots: 600, rang: 13 },
+  { shoots: 700, rang: 14 },
+  { shoots: 800, rang: 15 },
+  { shoots: 1000, rang: 16 },
+  { shoots: 1500, rang: 17 },
+  { shoots: 2000, rang: 18 },
+];

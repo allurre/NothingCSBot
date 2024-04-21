@@ -9,7 +9,12 @@ import {
   rarityChancesMap,
 } from "#root/database/interfaces/user-inventoty-item.js";
 import { getItem } from "#root/database/schemas/items.js";
-import { getShootChance, shootReward } from "#root/bot/helpers/varibles.js";
+import {
+  getRangById,
+  getShootChance,
+  shootReward,
+  shootsRang,
+} from "#root/bot/helpers/varibles.js";
 import { executeStartPromocode } from "#root/bot/handlers/start/promocode.js";
 import { hitText } from "#root/bot/helpers/text.js";
 import { i18n } from "#root/bot/i18n.js";
@@ -84,49 +89,28 @@ function getHitPosition(statusId: number, score: number): number {
   return userChance.length - 1;
 }
 
-export async function shoot(
-  ctx: CallbackQueryContext<ChatTypeContext<Context, "private">>,
-  userDatabase: Document & IUser,
-  userInventory: Document & IUserInventory,
-  userStats: Document & IUserStats,
-): Promise<void> {
-  const user = userDatabase;
-  const inventory = userInventory;
-  const stats = userStats;
-  if (user.status_id === undefined) {
-    ctx.reply(i18n.t(user.locate_code, "errors.no-calibration-user"));
-    return;
+export function getRankInfo(currentShots: number): {
+  rank: number;
+  progress: number;
+  remainingShots: number;
+} {
+  const nextRankIndex = shootsRang.findIndex(
+    ({ shoots }) => shoots > currentShots,
+  );
+
+  if (nextRankIndex === -1) {
+    // Пользователь достиг максимального ранга
+    return { rank: shootsRang.length, progress: 100, remainingShots: 0 };
   }
-  if (userInventory.targets < 1) {
-    ctx.reply(i18n.t(user.locate_code, "shoot.no-targets"));
-    return;
-  }
-  const shootMessage = ctx.reply(i18n.t(user.locate_code, "shoot.start"));
-  const score = randomInt(1, 100);
-  const hitTarget = getHitPosition(user.status_id, score);
-  const reward = shootReward[hitTarget];
-  inventory.coins += reward;
-  inventory.targets -= 1;
-  stats.earned += reward;
-  stats.shoots += 1;
-  if (hitTarget === 0) {
-    stats.headshots += 1;
-  }
-  const timerPromise = new Promise((resolve) => {
-    setTimeout(resolve, 3000);
-  });
-  Promise.all([
-    shootMessage,
-    inventory.save(),
-    stats.save(),
-    timerPromise,
-  ]).then(() => {
-    ctx.reply(
-      i18n.t(userDatabase.locate_code, `shoot.end-${hitText[hitTarget]}`, {
-        reward,
-      }),
-    );
-  });
+
+  const currentRankIndex = nextRankIndex - 1;
+  const currentRank = shootsRang[currentRankIndex];
+  const nextRank = shootsRang[nextRankIndex];
+  const shotsToNextRank = nextRank.shoots - currentShots;
+  const progress =
+    ((currentShots - currentRank.shoots) / (shotsToNextRank || 1)) * 100;
+
+  return { rank: currentRank.rang, progress, remainingShots: shotsToNextRank };
 }
 
 export async function sendNotification(
@@ -164,6 +148,22 @@ export async function sendNotification(
       );
       break;
     }
+    case "new_rank": {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.new_rank", {
+          rang: getRangById(userDatabase.status_id),
+        }),
+      );
+      break;
+    }
+    case "little_more": {
+      api.sendMessage(
+        userDatabase.id,
+        i18n.t(userDatabase.locate_code, "notifications.little_more"),
+      );
+      break;
+    }
 
     default: {
       api.sendMessage(
@@ -173,6 +173,62 @@ export async function sendNotification(
       break;
     }
   }
+}
+
+export async function shoot(
+  ctx: CallbackQueryContext<ChatTypeContext<Context, "private">>,
+  userDatabase: Document & IUser,
+  userInventory: Document & IUserInventory,
+  userStats: Document & IUserStats,
+): Promise<void> {
+  const user = userDatabase;
+  const inventory = userInventory;
+  const stats = userStats;
+  if (user.status_id === -1) {
+    ctx.reply(i18n.t(user.locate_code, "errors.no-calibration-user"));
+    return;
+  }
+  if (userInventory.targets < 1) {
+    ctx.reply(i18n.t(user.locate_code, "shoot.no-targets"));
+    return;
+  }
+  const shootMessage = await ctx.reply(i18n.t(user.locate_code, "shoot.start"));
+  const timerPromise = new Promise((resolve) => {
+    setTimeout(resolve, 3000);
+  });
+  const score = randomInt(1, 100);
+  const hitTarget = getHitPosition(user.status_id, score);
+  const reward = shootReward[hitTarget];
+
+  inventory.coins += reward;
+  inventory.targets -= 1;
+  stats.earned += reward;
+  stats.shoots += 1;
+  if (hitTarget === 0) {
+    stats.headshots += 1;
+  }
+
+  const userUpdateRang = getRankInfo(stats.shoots);
+  if (userUpdateRang.remainingShots === 1 && inventory.targets === 0) {
+    sendNotification(ctx.api, user, "little_more");
+  }
+  if (userUpdateRang.rank > user.status_id) {
+    user.status_id = userUpdateRang.rank;
+    sendNotification(ctx.api, user, "new_rank");
+  }
+
+  await Promise.all([
+    user.save(),
+    inventory.save(),
+    stats.save(),
+    timerPromise,
+  ]).then(() => {
+    shootMessage.editText(
+      i18n.t(userDatabase.locate_code, `shoot.end-${hitText[hitTarget]}`, {
+        reward,
+      }),
+    );
+  });
 }
 
 export async function isSubscribed(

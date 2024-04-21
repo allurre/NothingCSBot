@@ -18,11 +18,11 @@ feature.callbackQuery(
       return ctx.reply(ctx.t("errors.no-registered-user"));
     }
     const userDatabase = ctx.database.user;
-    if (userDatabase.status_id === undefined || userDatabase.status_id === -1) {
+    if (userDatabase.status_id === -1) {
       return ctx.reply(ctx.t("errors.no-calibration-user"));
     }
     const userInventory = ctx.database.inventory;
-    const rang = getRangById(userDatabase.status_id || 0);
+    const rang = getRangById(userDatabase.status_id);
     ctx.reply(
       ctx.t("workout.main", {
         name: userDatabase.username,

@@ -29,6 +29,7 @@ export async function attachUser(ctx: Context, next: NextFunction) {
       id: ctx.from.id,
       username: ctx.from.first_name,
       locate_code: ctx.from.language_code || "en",
+      status_id: -1,
     });
     if (newUser) await newUser.save();
     else return;

@@ -1,5 +1,5 @@
 import { NextFunction } from "grammy";
-import type { Context } from "../context.js";
+import type { Context } from "#root/bot/context.js";
 
 export const ignoreOld =
   (threshold = 60) =>
