@@ -17,14 +17,17 @@ import {
   addCaseData,
   addItemData,
   deleteItemData,
-  editCaseData,
   editCaseLocaleData,
   editLootData,
+  editCaseMenuData,
+  editCaseImageData,
+  editCaseData,
 } from "#root/bot/callback-data/index.js";
 import type { Context } from "#root/bot/context.js";
 import { IUser } from "#root/database/interfaces/user.js";
 import { getAllSubscribeChannels } from "#root/database/schemas/subscribe-channels.js";
 import { chunk } from "#root/bot/helpers/keyboard.js";
+import { config } from "#root/config.js";
 
 export const createAdminPanelMainKeyboard = (ctx: Context) => {
   return InlineKeyboard.from([
@@ -267,20 +270,26 @@ export const createItemsManageKeyboard = async (ctx: Context) => {
   ]);
 };
 
-export const createCaseEditKeyboard = async (ctx: Context, caseId: string) => {
+export const createCaseInfoKeyboard = async (ctx: Context, caseId: string) => {
   return InlineKeyboard.from([
     [
       {
         text: ctx.t("admin_buttons.case-edit"),
-        callback_data: editCaseData.pack({
+        callback_data: editCaseMenuData.pack({
+          id: caseId,
+        }),
+      },
+      {
+        text: ctx.t("admin_buttons.loot-edit"),
+        callback_data: editLootData.pack({
           id: caseId,
         }),
       },
     ],
     [
       {
-        text: ctx.t("admin_buttons.loot-edit"),
-        callback_data: editLootData.pack({
+        text: ctx.t("admin_buttons.image-edit"),
+        callback_data: editCaseImageData.pack({
           id: caseId,
         }),
       },
@@ -295,6 +304,33 @@ export const createCaseEditKeyboard = async (ctx: Context, caseId: string) => {
       {
         text: ctx.t("default_buttons.cansel"),
         callback_data: adminPanelData.pack({}),
+      },
+    ],
+  ]);
+};
+
+export const createCaseEditKeyboard = async (ctx: Context, caseId: string) => {
+  return InlineKeyboard.from([
+    [
+      {
+        text: ctx.t("admin_buttons.case-edit_candrop"),
+        callback_data: editCaseData.pack({
+          id: caseId,
+          field: "can_drop",
+        }),
+      },
+      {
+        text: ctx.t("admin_buttons.case-edit_price"),
+        callback_data: editCaseData.pack({
+          id: caseId,
+          field: "price",
+        }),
+      },
+    ],
+    [
+      {
+        text: ctx.t("default_buttons.back"),
+        url: `${config.BOT_LINK}?start=admincase-edit_${caseId}`,
       },
     ],
   ]);

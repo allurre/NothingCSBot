@@ -6,3 +6,5 @@ export interface ICommonCase {
   release: boolean;
   file_id?: string;
 }
+
+export const ICommonCaseFields = ["can_drop", "price"];

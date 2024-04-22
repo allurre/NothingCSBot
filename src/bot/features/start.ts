@@ -20,7 +20,7 @@ feature.command("start", logHandle("command-start"), async (ctx) => {
     const action = ctx.match.split("-")[0];
     const arguments_ = ctx.match.replace(/^-?\w+-\s*/, "");
     executeStartMatch(ctx, action, arguments_);
-    if (action.startsWith("a")) return ctx.msg.delete();
+    if (action.startsWith("admin")) return ctx.msg.delete();
   }
   const userDatabase = ctx.database.user;
   await (userDatabase.locate_code === undefined

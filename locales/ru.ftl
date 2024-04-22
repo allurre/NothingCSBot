@@ -194,17 +194,18 @@ admin =
     {$cases}
     .panel-no_cases = Нет кейсов
     .panel-add_case = Добавить кейс
-    .pannel-edit_case = Редактировать данные кейса {$name}
+    .pannel-info_case = Данные кейса: {$name}
     ID: {$id}
     Цена: {$price}
     Статус: {$relase}
     Может выпасть?: {$can_drop}
+    .panel-edit_case = Редактирование кейса: {$name}
     .info-relase = релизнут
     .info-no_relase = не релизнут
     .panel-manage_items = Управление предметами
     {$items}
     .panel-no_items = Нет предметов
-    .panel-sucsess = Успешно
+    .panel-sucsess = Успешно. Изменения будут применены в течении 5 минут
 
 admin_buttons =
     .choose-user = Получить пользователя
@@ -219,6 +220,9 @@ admin_buttons =
     .case-add = Добавить кейс
     .case-edit = Редактировать даннные
     .loot-edit = Редактировать лут
+    .image-edit = Редактировать изображение
+    .case-edit_candrop = Может выпасть
+    .case-edit_price = Цена
     .item-add = Добавить предмет
     .item-delete = Удалить предмет
     .manage-user = Управление пользователями

@@ -1,5 +1,5 @@
 import { Context } from "#root/bot/context.js";
-import { createCaseEditKeyboard } from "#root/bot/keyboards/index.js";
+import { createCaseInfoKeyboard } from "#root/bot/keyboards/index.js";
 import { getCase } from "#root/database/schemas/cases.js";
 
 export async function executeAdminCase(
@@ -14,7 +14,7 @@ export async function executeAdminCase(
   switch (caseAction) {
     case "edit": {
       ctx.reply(
-        ctx.t("admin.pannel-edit_case", {
+        ctx.t("admin.pannel-info_case", {
           id: box.id,
           name: ctx.t(`${box.id}.name`),
           price: box.price,
@@ -24,7 +24,7 @@ export async function executeAdminCase(
           can_drop: box.can_drop ? ctx.t("default.yes") : ctx.t("default.no"),
         }),
         {
-          reply_markup: await createCaseEditKeyboard(ctx, caseId),
+          reply_markup: await createCaseInfoKeyboard(ctx, caseId),
         },
       );
       break;

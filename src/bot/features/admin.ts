@@ -3,6 +3,7 @@ import { chatAction } from "@grammyjs/auto-chat-action";
 import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
+import { ICommonCaseFields } from "#root/database/interfaces/case.js";
 import { setCommandsHandler } from "#root/bot/handlers/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
@@ -22,6 +23,7 @@ import {
   createChannelsRemoveKeyboard,
   createCasesManageKeyboard,
   createItemsManageKeyboard,
+  createCaseEditKeyboard,
 } from "#root/bot/keyboards/index.js";
 import {
   adminPanelData,
@@ -35,8 +37,10 @@ import {
   casesManagementData,
   addCaseData,
   itemsManagementData,
+  editCaseData,
+  editCaseMenuData,
 } from "#root/bot/callback-data/index.js";
-import { getAllCases } from "#root/database/schemas/cases.js";
+import { getAllCases, getCase } from "#root/database/schemas/cases.js";
 import { config } from "#root/config.js";
 import { getAllItems } from "#root/database/schemas/items.js";
 
@@ -123,10 +127,10 @@ feature.callbackQuery(
         ? undefined
         : allCases
             .map((box) => {
-              const boxText = `<a href="${config.BOT_LINK}?start=acase-edit_${box.id}">${ctx.t(`${box.id}.name`)}</a>`;
+              const boxText = `<a href="${config.BOT_LINK}?start=admincase-edit_${box.id}">${ctx.t(`${box.id}.name`)}</a>`;
               const link = box.release
-                ? `<a href="${config.BOT_LINK}?start=acase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
-                : `<a href="${config.BOT_LINK}?start=acase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
+                ? `<a href="${config.BOT_LINK}?start=admincase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
+                : `<a href="${config.BOT_LINK}?start=admincase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
               return `${boxText} - ${link}`;
             })
             .join("\n");
@@ -156,7 +160,7 @@ feature.callbackQuery(
         ? undefined
         : allItems
             .map((item) => {
-              const link = `<a href="${config.BOT_LINK}?start=aitem_${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
+              const link = `<a href="${config.BOT_LINK}?start=adminitem_${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
               return `${link}`;
             })
             .join("\n");
@@ -299,6 +303,44 @@ feature.callbackQuery(
         },
       },
     );
+  },
+);
+
+feature.callbackQuery(
+  editCaseMenuData.filter(),
+  logHandle("keyboard-caseedit-select"),
+  async (ctx) => {
+    const { id: caseId } = editCaseMenuData.unpack(ctx.callbackQuery.data);
+    const box = await getCase(caseId);
+    if (box === undefined) {
+      return ctx.reply(ctx.t("errors.loose_data"));
+    }
+    ctx.answerCallbackQuery();
+    return ctx.reply(
+      ctx.t("admin.panel-edit_case", {
+        name: ctx.t(`${box.id}.name`),
+      }),
+      {
+        reply_markup: await createCaseEditKeyboard(ctx, caseId),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  editCaseData.filter(),
+  logHandle("keyboard-caseedit-select"),
+  async (ctx) => {
+    const { id: caseId, field: caseField } = editCaseData.unpack(
+      ctx.callbackQuery.data,
+    );
+    const box = getCase(caseId);
+    if (box === undefined) {
+      return ctx.reply(ctx.t("errors.loose_data"));
+    }
+    if (ICommonCaseFields.includes(caseField)) {
+      return ctx.reply(ctx.t("errors.an-error-has-occurred"));
+    }
   },
 );
 
