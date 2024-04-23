@@ -179,6 +179,7 @@ feature.callbackQuery(
   },
 );
 
+// блок с доп каналами (вынести в файл)
 feature.callbackQuery(
   addSubscribeChannelData.filter(),
   logHandle("keyboard-addsubscribechannel-select"),
@@ -224,7 +225,9 @@ feature.callbackQuery(
     });
   },
 );
+// блок с доп каналами все
 
+// блок с редактированием данных пользователя (в отделньый файл)
 feature.callbackQuery(
   moneyChangeData.filter(),
   logHandle("keyboard-usermoneychange-select"),
@@ -292,7 +295,9 @@ feature.callbackQuery(
     });
   },
 );
+// блок с редактированием данных пользователя все
 
+// блок с кейсами (вынести в отдельный файл)
 feature.callbackQuery(
   addCaseData.filter(),
   logHandle("keyboard-caseadd-select"),
@@ -386,5 +391,8 @@ feature.callbackQuery(
     // редктирование локализации кейса
   },
 );
+// блок с кейсами все
+
+// редактирование предметов
 
 export { composer as adminFeature };
