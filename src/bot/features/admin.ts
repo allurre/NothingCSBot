@@ -39,6 +39,9 @@ import {
   itemsManagementData,
   editCaseData,
   editCaseMenuData,
+  editCaseImageData,
+  editLootData,
+  editCaseLocaleData,
 } from "#root/bot/callback-data/index.js";
 import { getAllCases, getCase } from "#root/database/schemas/cases.js";
 import { config } from "#root/config.js";
@@ -313,7 +316,7 @@ feature.callbackQuery(
     const { id: caseId } = editCaseMenuData.unpack(ctx.callbackQuery.data);
     const box = await getCase(caseId);
     if (box === undefined) {
-      return ctx.reply(ctx.t("errors.loose_data"));
+      return ctx.reply(ctx.t("errors.lost_data"));
     }
     ctx.answerCallbackQuery();
     return ctx.reply(
@@ -336,11 +339,51 @@ feature.callbackQuery(
     );
     const box = getCase(caseId);
     if (box === undefined) {
-      return ctx.reply(ctx.t("errors.loose_data"));
+      return ctx.reply(ctx.t("errors.lost_data"));
     }
     if (ICommonCaseFields.includes(caseField)) {
       return ctx.reply(ctx.t("errors.an-error-has-occurred"));
     }
+    // редктирование либо цены, либо возможности выпадения
+  },
+);
+
+feature.callbackQuery(
+  editCaseImageData.filter(),
+  logHandle("keyboard-caseedit-select"),
+  async (ctx) => {
+    const { id: caseId } = editCaseImageData.unpack(ctx.callbackQuery.data);
+    const box = getCase(caseId);
+    if (box === undefined) {
+      return ctx.reply(ctx.t("errors.lost_data"));
+    }
+    // редктирование изображения
+  },
+);
+
+feature.callbackQuery(
+  editLootData.filter(),
+  logHandle("keyboard-caseedit-select"),
+  async (ctx) => {
+    const { id: caseId } = editLootData.unpack(ctx.callbackQuery.data);
+    const box = getCase(caseId);
+    if (box === undefined) {
+      return ctx.reply(ctx.t("errors.lost_data"));
+    }
+    // редктирование лута
+  },
+);
+
+feature.callbackQuery(
+  editCaseLocaleData.filter(),
+  logHandle("keyboard-caseedit-select"),
+  async (ctx) => {
+    const { id: caseId } = editCaseLocaleData.unpack(ctx.callbackQuery.data);
+    const box = getCase(caseId);
+    if (box === undefined) {
+      return ctx.reply(ctx.t("errors.lost_data"));
+    }
+    // редктирование локализации кейса
   },
 );
 
