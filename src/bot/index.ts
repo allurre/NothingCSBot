@@ -9,7 +9,7 @@ import {
   adminUserChange,
   adminNewChannel,
   adminNewCase,
-} from "#root/bot/statelessquestion/admin.js";
+} from "#root/bot/statelessquestion/index.js";
 import {
   Context,
   SessionData,

@@ -302,7 +302,7 @@ export const createCaseInfoKeyboard = async (ctx: Context, caseId: string) => {
     ],
     [
       {
-        text: ctx.t("default_buttons.cansel"),
+        text: ctx.t("default_buttons.cancel"),
         callback_data: adminPanelData.pack({}),
       },
     ],

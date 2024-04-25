@@ -3,7 +3,7 @@ import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { isAdmin } from "#root/bot/filters/index.js";
 import { getAllSubscribeChannels } from "#root/database/schemas/subscribe-channels.js";
-import { adminNewChannel } from "#root/bot/statelessquestion/admin.js";
+import { adminNewChannel } from "#root/bot/statelessquestion/index.js";
 
 const composer = new Composer<Context>();
 

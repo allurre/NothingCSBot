@@ -3,7 +3,7 @@ import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { getInvetory } from "#root/database/schemas/user-inventory.js";
-import { adminUserChange } from "#root/bot/statelessquestion/admin.js";
+import { adminUserChange } from "#root/bot/statelessquestion/index.js";
 import {
   moneyChangeData,
   shootChangeData,

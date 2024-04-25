@@ -1,13 +1,11 @@
 start_command = 
-    .description = Перезапустить бота
+    .description = Меню
 language_command = 
-    .description = Поменять язык
+    .description = Язык
 setcommands_command =
     .description = Обновить команды
-roll_command =
-    .description = Кидай кубик
 panel_command =
-    .description = Админ панель
+    .description = Админка
 
 start = 
     .register = Привет, {$name}! 
@@ -34,10 +32,16 @@ start_buttons =
 default_buttons = 
     .home = Домой
     .back = Назад
-    .cansel = Отмена
+    .cancel = Отмена
+    .confirm = Подтвердить
 default =
     .no = нет
     .yes = да
+
+format =
+    .only_en = только английские буквы
+    .channel = ссылка@название@доп.мишени(1 по умолчанию)
+    .data_change = число@комментарий
 
 calibration =
     .end = ✔️ Калибровка завершена!

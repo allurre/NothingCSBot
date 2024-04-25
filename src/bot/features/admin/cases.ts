@@ -4,7 +4,7 @@ import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
 import { ICommonCaseFields } from "#root/database/interfaces/case.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
-import { adminNewCase } from "#root/bot/statelessquestion/admin.js";
+import { adminNewCase } from "#root/bot/statelessquestion/index.js";
 import { getAllCases, getCase } from "#root/database/schemas/cases.js";
 import {
   createCaseEditKeyboard,
