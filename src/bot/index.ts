@@ -9,6 +9,7 @@ import {
   adminUserChange,
   adminNewChannel,
   adminNewCase,
+  adminNewItem,
 } from "#root/bot/statelessquestion/index.js";
 import {
   Context,
@@ -65,13 +66,13 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(autoChatAction(bot.api));
   protectedBot.use(hydrateReply);
   protectedBot.use(hydrate());
-  protectedBot.use(attachUser);
   protectedBot.use(
     session({
       initial: () => ({}),
       storage: sessionStorage,
     }),
   );
+  protectedBot.use(attachUser);
   protectedBot.use(i18n);
   protectedBot.use(conversations());
   protectedBot.use(ignoreOld(60 * 60));
@@ -96,6 +97,7 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(adminUserChange.middleware());
   protectedBot.use(adminNewChannel.middleware());
   protectedBot.use(adminNewCase.middleware());
+  protectedBot.use(adminNewItem.middleware());
 
   // must be the last handler
   protectedBot.use(unhandledFeature);

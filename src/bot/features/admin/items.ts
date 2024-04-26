@@ -5,7 +5,12 @@ import { logHandle } from "#root/bot/helpers/logging.js";
 import { getAllItems } from "#root/database/schemas/items.js";
 import { config } from "#root/config.js";
 import { createItemsManageKeyboard } from "#root/bot/keyboards/index.js";
-import { itemsManagementData } from "#root/bot/callback-data/index.js";
+import {
+  addItemData,
+  itemsManagementData,
+} from "#root/bot/callback-data/index.js";
+import { adminNewItem } from "#root/bot/statelessquestion/admin/items.js";
+import { itemName } from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
 
@@ -25,7 +30,7 @@ feature.callbackQuery(
         ? undefined
         : allItems
             .map((item) => {
-              const link = `<a href="${config.BOT_LINK}?start=adminitem_${item.id}">${ctx.t(`${item.id}.name`)}</a>`;
+              const link = `<a href="${config.BOT_LINK}?start=adminitem_${item.id}">${itemName(item, ctx.database.user.locate_code)}</a>`;
               return `${link}`;
             })
             .join("\n");
@@ -36,6 +41,22 @@ feature.callbackQuery(
       }),
       {
         reply_markup: await createItemsManageKeyboard(ctx),
+      },
+    );
+  },
+);
+
+feature.callbackQuery(
+  addItemData.filter(),
+  logHandle("keyboard-caseadd-select"),
+  async (ctx) => {
+    ctx.answerCallbackQuery();
+    ctx.reply(
+      ctx.t("admin.panel-add_item") + adminNewItem.messageSuffixHTML(),
+      {
+        reply_markup: {
+          force_reply: true,
+        },
       },
     );
   },

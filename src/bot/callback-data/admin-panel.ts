@@ -74,3 +74,12 @@ export const promocodesManagementData = createCallbackData(
   "promocodes-management",
   {},
 );
+export const promocodesExpiredData = createCallbackData(
+  "promocodes-expired-view",
+  {},
+);
+export const promocodesActiveData = createCallbackData(
+  "promocodes-active-view",
+  {},
+);
+

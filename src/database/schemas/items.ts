@@ -8,6 +8,24 @@ import {
 const ItemSchema: Schema = new Schema({
   _id: { type: String, required: true },
   price: { type: Number, required: true, default: 0 },
+  name: {
+    type: [
+      {
+        lang_code: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
+    required: true,
+  },
+  description: {
+    type: [
+      {
+        lang_code: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
+    required: false,
+  },
   rarity: {
     type: String,
     required: true,
@@ -47,19 +65,20 @@ export async function getItem(
 export function createItem(
   id: string,
   name: string,
-  price: number,
-  rarity: string,
 ): (Document & IUserInventoryItem) | undefined {
-  if (!id || !name || !price || !rarity) {
+  if (!id || !name) {
     logger.error("New Item data is required.");
     return undefined;
   }
 
   const itemDatabase = new Item({
     _id: id,
-    name,
-    price,
-    rarity,
+    name: [
+      {
+        lang_code: "en",
+        value: name,
+      },
+    ],
   });
 
   return itemDatabase;

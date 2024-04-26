@@ -1,3 +1,5 @@
+import { ILocale } from "./locale.js";
+
 export const rarityChancesMap = new Map([
   [0, "ARMY"],
   [72, "ARMY_ST"],
@@ -22,6 +24,8 @@ export const itemRarities = [
 
 export interface IUserInventoryItem {
   id: string;
+  name: Array<ILocale>;
+  description?: Array<ILocale>;
   price: number;
   rarity: string;
   group_drop_chance: number;

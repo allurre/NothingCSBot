@@ -9,6 +9,7 @@ import {
   caseOpenData,
   homeData,
 } from "#root/bot/callback-data/index.js";
+import { caseName } from "../helpers/utils.js";
 
 export const createRelaseCasesKeyboard = async (ctx: Context) => {
   const allRelaseCases = await getAllReleasedCases();
@@ -25,7 +26,7 @@ export const createRelaseCasesKeyboard = async (ctx: Context) => {
 
   const caseKeyboard = chunk(
     allRelaseCases.map((box) => ({
-      text: ctx.t(`${box.id}.name`),
+      text: caseName(box, ctx.database.user.locate_code),
       callback_data: caseData.pack({
         id: box.id,
       }),
@@ -62,7 +63,7 @@ export const createOpenCaseMenuKeyboard = async (
     [
       {
         text: ctx.t("cases_buttons.open", {
-          name: ctx.t(`${box.id}.name`),
+          name: caseName(box, ctx.database.user.locate_code),
         }),
         callback_data: caseOpenData.pack({
           id: caseId,

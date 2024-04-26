@@ -4,6 +4,24 @@ import { ICommonCase } from "../interfaces/case.js";
 
 const CaseSchema: Schema = new Schema({
   _id: { type: String, required: true },
+  name: {
+    type: [
+      {
+        lang_code: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
+    required: true,
+  },
+  description: {
+    type: [
+      {
+        lang_code: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
+    required: false,
+  },
   loot: [{ type: String, required: true, default: 0 }],
   can_drop: { type: Boolean, required: true, default: false },
   price: { type: Number, required: true, default: -1 },
@@ -42,7 +60,12 @@ export function createCase(
 
   const caseDatabase = new Case({
     _id: id,
-    name,
+    name: [
+      {
+        lang_code: "en",
+        value: name,
+      },
+    ],
   });
   return caseDatabase;
 }
@@ -51,21 +74,33 @@ export async function getAllReleasedCases(): Promise<
   Array<Document & ICommonCase> | undefined
 > {
   const releasedCases = await Case.find({ release: true });
-  return releasedCases;
+  if (releasedCases.length > 0) {
+    return releasedCases;
+  }
+
+  return undefined;
 }
 
 export async function getAllUnReleasedCases(): Promise<
   Array<Document & ICommonCase> | undefined
 > {
-  const releasedCases = await Case.find({ release: false });
-  return releasedCases;
+  const unReleasedCases = await Case.find({ release: false });
+  if (unReleasedCases.length > 0) {
+    return unReleasedCases;
+  }
+
+  return undefined;
 }
 
 export async function getAllCases(): Promise<
   Array<Document & ICommonCase> | undefined
 > {
   const allCases = await Case.find();
-  return allCases;
+  if (allCases.length > 0) {
+    return allCases;
+  }
+
+  return undefined;
 }
 
 export async function updateCaseData(

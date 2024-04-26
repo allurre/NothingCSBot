@@ -2,7 +2,7 @@
 import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
-import { ICommonCaseFields } from "#root/database/interfaces/case.js";
+import { ICommonCaseDataFields } from "#root/database/interfaces/case.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { adminNewCase } from "#root/bot/statelessquestion/index.js";
 import { getAllCases, getCase } from "#root/database/schemas/cases.js";
@@ -20,6 +20,7 @@ import {
   casesManagementData,
 } from "#root/bot/callback-data/index.js";
 import { config } from "#root/config.js";
+import { caseName } from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
 
@@ -39,7 +40,7 @@ feature.callbackQuery(
         ? undefined
         : allCases
             .map((box) => {
-              const boxText = `<a href="${config.BOT_LINK}?start=admincase-edit_${box.id}">${ctx.t(`${box.id}.name`)}</a>`;
+              const boxText = `<a href="${config.BOT_LINK}?start=admincase-edit_${box.id}">${caseName(box, ctx.database.user.locate_code)}</a>`;
               const link = box.release
                 ? `<a href="${config.BOT_LINK}?start=admincase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
                 : `<a href="${config.BOT_LINK}?start=admincase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
@@ -86,7 +87,7 @@ feature.callbackQuery(
     ctx.answerCallbackQuery();
     return ctx.reply(
       ctx.t("admin.panel-edit_case", {
-        name: ctx.t(`${box.id}.name`),
+        name: caseName(box, ctx.database.user.locate_code),
       }),
       {
         reply_markup: await createCaseEditKeyboard(ctx, caseId),
@@ -106,7 +107,7 @@ feature.callbackQuery(
     if (box === undefined) {
       return ctx.reply(ctx.t("errors.lost_data"));
     }
-    if (ICommonCaseFields.includes(caseField)) {
+    if (ICommonCaseDataFields.includes(caseField)) {
       return ctx.reply(ctx.t("errors.an-error-has-occurred"));
     }
     // редктирование либо цены, либо возможности выпадения

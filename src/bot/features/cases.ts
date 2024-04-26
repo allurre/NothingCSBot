@@ -15,10 +15,13 @@ import {
   createRelaseCasesKeyboard,
 } from "#root/bot/keyboards/case.js";
 import {
+  caseDescription,
+  caseName,
   getItemDescription,
   getLootByRarity,
   getRandomItem,
   getRandomRarity,
+  itemName,
 } from "#root/bot/helpers/utils.js";
 
 const composer = new Composer<Context>();
@@ -55,17 +58,18 @@ feature.callbackQuery(
     if (box.file_id !== undefined) {
       return ctx.replyWithPhoto(box.file_id, {
         caption: ctx.t("cases.case-menu", {
-          name: ctx.t(`${box.id}.name`),
+          name: caseName(box, ctx.database.user.locate_code),
           price: box.price,
-          description: ctx.t(`${box.id}.description`),
+          description: caseDescription(box, ctx.database.user.locate_code),
         }),
+        reply_markup: await createOpenCaseMenuKeyboard(ctx, box.id),
       });
     }
     return ctx.reply(
       ctx.t("cases.case-menu", {
-        name: ctx.t(`${box.id}.name`),
+        name: caseName(box, ctx.database.user.locate_code),
         price: box.price,
-        description: ctx.t(`${box.id}.description`),
+        description: caseDescription(box, ctx.database.user.locate_code),
       }),
       {
         reply_markup: await createOpenCaseMenuKeyboard(ctx, box.id),
@@ -113,7 +117,7 @@ feature.callbackQuery(
     if (dropedItem.file_id === undefined) {
       return ctx.reply(
         ctx.t("loot.drop", {
-          name: ctx.t(`${dropedItem.id}.name`),
+          name: itemName(dropedItem, ctx.database.user.locate_code),
           price: dropedItem.price,
           rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
         }),
@@ -121,7 +125,7 @@ feature.callbackQuery(
     }
     return ctx.replyWithPhoto(dropedItem.file_id, {
       caption: ctx.t("loot.drop", {
-        name: ctx.t(`${dropedItem.id}.name`),
+        name: itemName(dropedItem, ctx.database.user.locate_code),
         price: dropedItem.price,
         rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
       }),
@@ -156,7 +160,7 @@ feature.callbackQuery(
             type: "photo",
             media: item.file_id,
             caption: ctx.t("cases.case-info", {
-              name: ctx.t(`${box.id}.name`),
+              name: itemName(item, ctx.database.user.locate_code),
               loot: description.toString(),
             }),
           },
@@ -169,7 +173,7 @@ feature.callbackQuery(
       ctx.deleteMessage();
       return ctx.reply(
         ctx.t("cases.case-info", {
-          name: ctx.t(`${box.id}.name`),
+          name: caseName(box, ctx.database.user.locate_code),
           loot: description.toString(),
         }),
         {
@@ -181,7 +185,7 @@ feature.callbackQuery(
       return ctx.replyWithPhoto(item.file_id, {
         // оправка предмета с фото, если прошлый без фото
         caption: ctx.t("cases.case-info", {
-          name: ctx.t(`${box.id}.name`),
+          name: caseName(box, ctx.database.user.locate_code),
           loot: description.toString(),
         }),
         reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
@@ -190,7 +194,7 @@ feature.callbackQuery(
     // оправка предмета без фото, если прошлый без фото
     return ctx.editMessageText(
       ctx.t("cases.case-info", {
-        name: ctx.t(`${box.id}.name`),
+        name: caseName(box, ctx.database.user.locate_code),
         loot: description.toString(),
       }),
       {

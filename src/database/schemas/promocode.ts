@@ -1,9 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 import { logger } from "#root/logger.js";
 import { IPromocode } from "../interfaces/promocode.js";
-import { LRUCache } from "../cache/cache.js";
-
-const cache = new LRUCache<string, Document & IPromocode>(100);
 
 const PromocodeSchema: Schema = new Schema({
   _id: { type: String, required: true },
@@ -12,11 +9,6 @@ const PromocodeSchema: Schema = new Schema({
   express_at: { type: Date, required: true, default: new Date(0, 0) },
   count: { type: Number, required: true, default: 1 },
   type_id: { type: Number, required: true, default: 1 },
-});
-
-PromocodeSchema.pre("save", function psave(this: Document & IPromocode, next) {
-  cache.add(this._id, this);
-  next();
 });
 
 PromocodeSchema.methods.useage = async function promoUse() {
@@ -36,18 +28,12 @@ export async function getPromocode(
     return undefined;
   }
 
-  const cached = cache.get(code);
-  if (cached) return cached;
-
   const prommocodeDatabase = await Promocode.findById(code);
   if (prommocodeDatabase) {
-    cache.add(code, prommocodeDatabase);
-  } else {
-    logger.error("Promocode is not found.");
-    return undefined;
+    return prommocodeDatabase;
   }
-
-  return prommocodeDatabase;
+  logger.error("Promocode is not found.");
+  return undefined;
 }
 
 export async function createPromocode(
@@ -71,6 +57,34 @@ export async function createPromocode(
     type_id: typeId,
   });
 
-  cache.add(code, promocodeDatabase);
   return promocodeDatabase;
+}
+
+export async function getAllActivePromocodes(): Promise<
+  (Document & IPromocode)[] | undefined
+> {
+  const activePromocodesDatabase = await Promocode.find({
+    uses: { $lt: "$activations" },
+    express_at: { $lt: new Date() },
+  });
+  if (activePromocodesDatabase.length > 0) {
+    return activePromocodesDatabase;
+  }
+
+  return undefined;
+}
+
+export async function getAllExpiredPromocodes(): Promise<
+  (Document & IPromocode)[] | undefined
+> {
+  const expiredPromocodeDatabase = await Promocode.find({
+    uses: { $eq: "$activations" },
+    express_at: { $gte: new Date() },
+  });
+
+  if (expiredPromocodeDatabase.length > 0) {
+    return expiredPromocodeDatabase;
+  }
+
+  return undefined;
 }

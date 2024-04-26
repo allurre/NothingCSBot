@@ -141,16 +141,6 @@ loot =
     Качество: {$rarity}
     Цена: {$price}
 
-thisboxtest =
-    .name = Тестовый кейс
-    .description = Описание тестового кейса
-
-randomitem =
-    .name = Рандомный скин просто
-
-randomitem1 = 
-    .name = Еще рандом скин
-
 cases_buttons =
     .no_cases = Нет кейсов
     .info = Подробнее
@@ -209,6 +199,11 @@ admin =
     .panel-manage_items = Управление предметами
     {$items}
     .panel-no_items = Нет предметов
+    .panel-add_item = Добавить предмет
+    .panel-no_active_promo = Нет активных промокодов
+    Может посмотрим устаревшие?
+    .panel-no_expired_promo = Нет устаревших промокодов
+    Может посмотрим активные?
     .panel-sucsess = Успешно. Изменения будут применены в течении 5 минут
 
 admin_buttons =
@@ -237,6 +232,8 @@ admin_buttons =
     .manage-promocodes = Управление промокодами
     .manage-mailing = Рассылка
     .locale-edit = Локализация
+    .view-expired_promocodes = Старые промокоды
+    .view-active_promocodes = Активные промокоды
 
 notifications =
     .money_change = Ваши монетки изменены

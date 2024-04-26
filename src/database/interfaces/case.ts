@@ -1,5 +1,9 @@
+import { ILocale } from "./locale.js";
+
 export interface ICommonCase {
   id: number;
+  name: Array<ILocale>;
+  description: Array<ILocale>;
   loot: Array<string>;
   can_drop: boolean;
   price: number;
@@ -7,4 +11,4 @@ export interface ICommonCase {
   file_id?: string;
 }
 
-export const ICommonCaseFields = ["can_drop", "price"];
+export const ICommonCaseDataFields = ["can_drop", "price"];

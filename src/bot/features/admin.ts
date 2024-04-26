@@ -11,6 +11,7 @@ import { adminUsersFeature } from "./admin/user.js";
 import { adminAdditionallyFeature } from "./admin/additionally.js";
 import { adminCasesFeature } from "./admin/cases.js";
 import { adminItemsFeature } from "./admin/items.js";
+import { adminPromoFeature } from "./admin/promo.js";
 
 const composer = new Composer<Context>();
 
@@ -44,5 +45,6 @@ feature.use(adminUsersFeature);
 feature.use(adminAdditionallyFeature);
 feature.use(adminCasesFeature);
 feature.use(adminItemsFeature);
+feature.use(adminPromoFeature);
 
 export { composer as adminFeature };
