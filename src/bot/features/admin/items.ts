@@ -10,7 +10,7 @@ import {
   itemsManagementData,
 } from "#root/bot/callback-data/index.js";
 import { adminNewItem } from "#root/bot/statelessquestion/admin/items.js";
-import { itemName } from "#root/bot/helpers/utils.js";
+import { itemName } from "#root/bot/helpers/text.js";
 
 const composer = new Composer<Context>();
 

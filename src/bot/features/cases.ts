@@ -15,14 +15,12 @@ import {
   createRelaseCasesKeyboard,
 } from "#root/bot/keyboards/case.js";
 import {
-  caseDescription,
-  caseName,
   getItemDescription,
   getLootByRarity,
   getRandomItem,
   getRandomRarity,
-  itemName,
 } from "#root/bot/helpers/utils.js";
+import { caseDescription, caseName, itemName } from "#root/bot/helpers/text.js";
 
 const composer = new Composer<Context>();
 

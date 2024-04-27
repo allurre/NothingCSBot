@@ -9,7 +9,7 @@ import {
   caseOpenData,
   homeData,
 } from "#root/bot/callback-data/index.js";
-import { caseName } from "../helpers/utils.js";
+import { caseName } from "#root/bot/helpers/text.js";
 
 export const createRelaseCasesKeyboard = async (ctx: Context) => {
   const allRelaseCases = await getAllReleasedCases();

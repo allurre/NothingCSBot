@@ -1,4 +1,5 @@
 import { Context } from "#root/bot/context.js";
+import { caseName } from "#root/bot/helpers/text.js";
 import { createCaseInfoKeyboard } from "#root/bot/keyboards/index.js";
 import { getCase } from "#root/database/schemas/cases.js";
 
@@ -16,7 +17,7 @@ export async function executeAdminCase(
       ctx.reply(
         ctx.t("admin.pannel-info_case", {
           id: box.id,
-          name: ctx.t(`${box.id}.name`),
+          name: caseName(box, ctx.database.user.locate_code),
           price: box.price,
           relase: box.release
             ? ctx.t("admin.info-relase")

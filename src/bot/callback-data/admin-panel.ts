@@ -82,4 +82,3 @@ export const promocodesActiveData = createCallbackData(
   "promocodes-active-view",
   {},
 );
-

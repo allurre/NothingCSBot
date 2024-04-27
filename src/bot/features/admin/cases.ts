@@ -20,7 +20,7 @@ import {
   casesManagementData,
 } from "#root/bot/callback-data/index.js";
 import { config } from "#root/config.js";
-import { caseName } from "#root/bot/helpers/utils.js";
+import { caseName } from "#root/bot/helpers/text.js";
 
 const composer = new Composer<Context>();
 
@@ -123,6 +123,7 @@ feature.callbackQuery(
     if (box === undefined) {
       return ctx.reply(ctx.t("errors.lost_data"));
     }
+    return ctx.reply(ctx.t("errors.lost_data"));
     // редктирование изображения
   },
 );

@@ -19,40 +19,7 @@ import { executeStartPromocode } from "#root/bot/handlers/start/promocode.js";
 import { hitText } from "#root/bot/helpers/text.js";
 import { i18n } from "#root/bot/i18n.js";
 import { Context } from "#root/bot/context.js";
-import { ICommonCase } from "#root/database/interfaces/case.js";
 import { executeAdminCase } from "../handlers/start/admin/cases.js";
-
-export function caseName(box: ICommonCase, langCode: string) {
-  const localizedName = box.name.find(
-    (nameObject) => nameObject.lang_code === langCode,
-  );
-
-  return localizedName ? localizedName.value : " ";
-}
-
-export function caseDescription(box: ICommonCase, langCode: string) {
-  const localizedName = box.description.find(
-    (nameObject) => nameObject.lang_code === langCode,
-  );
-
-  return localizedName ? localizedName.value : " ";
-}
-
-export function itemName(item: IUserInventoryItem, langCode: string) {
-  const localizedName = item.name.find(
-    (nameObject) => nameObject.lang_code === langCode,
-  );
-
-  return localizedName ? localizedName.value : " ";
-}
-
-export function itemDescription(item: IUserInventoryItem, langCode: string) {
-  const localizedName = item.name.find(
-    (nameObject) => nameObject.lang_code === langCode,
-  );
-
-  return localizedName ? localizedName.value : " ";
-}
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
