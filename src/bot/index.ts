@@ -9,6 +9,7 @@ import {
   adminUserChange,
   adminNewChannel,
   adminNewCase,
+  adminPhotoCase,
   adminNewItem,
 } from "#root/bot/statelessquestion/index.js";
 import {
@@ -98,6 +99,7 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(adminNewChannel.middleware());
   protectedBot.use(adminNewCase.middleware());
   protectedBot.use(adminNewItem.middleware());
+  protectedBot.use(adminPhotoCase.middleware());
 
   // must be the last handler
   protectedBot.use(unhandledFeature);

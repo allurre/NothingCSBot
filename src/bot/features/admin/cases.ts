@@ -4,7 +4,10 @@ import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
 import { ICommonCaseDataFields } from "#root/database/interfaces/case.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
-import { adminNewCase } from "#root/bot/statelessquestion/index.js";
+import {
+  adminNewCase,
+  adminPhotoCase,
+} from "#root/bot/statelessquestion/index.js";
 import { getAllCases, getCase } from "#root/database/schemas/cases.js";
 import {
   createCaseEditKeyboard,
@@ -105,10 +108,10 @@ feature.callbackQuery(
     );
     const box = getCase(caseId);
     if (box === undefined) {
-      return ctx.reply(ctx.t("errors.lost_data"));
+      return ctx.answerCallbackQuery(ctx.t("errors.lost_data"));
     }
     if (ICommonCaseDataFields.includes(caseField)) {
-      return ctx.reply(ctx.t("errors.an-error-has-occurred"));
+      return ctx.answerCallbackQuery(ctx.t("errors.an-error-has-occurred"));
     }
     // редктирование либо цены, либо возможности выпадения
   },
@@ -119,12 +122,19 @@ feature.callbackQuery(
   logHandle("keyboard-case-edit-image-select"),
   async (ctx) => {
     const { id: caseId } = editCaseImageData.unpack(ctx.callbackQuery.data);
-    const box = getCase(caseId);
+    const box = await getCase(caseId);
     if (box === undefined) {
-      return ctx.reply(ctx.t("errors.lost_data"));
+      return ctx.answerCallbackQuery(ctx.t("errors.lost_data"));
     }
-    return ctx.reply(ctx.t("errors.lost_data"));
-    // редктирование изображения
+    ctx.answerCallbackQuery();
+    return ctx.reply(
+      ctx.t("admin.case-edit_photo") + adminPhotoCase.messageSuffixHTML(box.id),
+      {
+        reply_markup: {
+          force_reply: true,
+        },
+      },
+    );
   },
 );
 

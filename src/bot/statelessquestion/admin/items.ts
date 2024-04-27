@@ -35,5 +35,8 @@ export const adminNewItem = new StatelessQuestion(
       return;
     }
     newItem.save();
+    ctx.reply(i18n.t(userDatabase.locate_code, "admin.panel-success"), {
+      reply_markup: { remove_keyboard: true },
+    });
   },
 );

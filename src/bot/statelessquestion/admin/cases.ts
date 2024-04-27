@@ -70,5 +70,8 @@ export const adminPhotoCase = new StatelessQuestion(
     }
     box.file_id = caseImage;
     box.save();
+    ctx.reply(i18n.t(userDatabase.locate_code, "admin.panel-success"), {
+      reply_markup: { remove_keyboard: true },
+    });
   },
 );
