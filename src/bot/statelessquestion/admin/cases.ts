@@ -53,21 +53,21 @@ export const adminPhotoCase = new StatelessQuestion(
     if (userDatabase === undefined) {
       return;
     }
-    if (ctx.message.photo === undefined) {
-      ctx.reply(
-        i18n.t(userDatabase.locate_code, "errors.invalid-input", {
-          format: i18n.t(userDatabase.locate_code, "format.photo"),
-        }),
-      );
-      return;
-    }
-    const caseImage = ctx.message.photo[0].file_id;
     const caseId = additionalState;
     const box = await getCase(caseId);
     if (box === undefined) {
       ctx.reply(i18n.t(userDatabase.locate_code, "errors.lost_data"));
       return;
     }
+    if (ctx.message.photo === undefined) {
+      box.file_id = undefined;
+      box.save();
+      ctx.reply(i18n.t(userDatabase.locate_code, "admin.panel-success"), {
+        reply_markup: { remove_keyboard: true },
+      });
+      return;
+    }
+    const caseImage = ctx.message.photo[0].file_id;
     box.file_id = caseImage;
     box.save();
     ctx.reply(i18n.t(userDatabase.locate_code, "admin.panel-success"), {
