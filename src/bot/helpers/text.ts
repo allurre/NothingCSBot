@@ -1,5 +1,5 @@
 import { ICommonCase } from "#root/database/interfaces/case.js";
-import { IUserInventoryItem } from "#root/database/interfaces/user-inventoty-item.js";
+import { IUserInventoryItem } from "#root/database/interfaces/user-inventory-item.js";
 
 export const hitText: { [key: number]: string } = {
   0: "head",

@@ -12,7 +12,7 @@ import { getItem } from "#root/database/schemas/items.js";
 import {
   createInfoMenuKeyboard,
   createOpenCaseMenuKeyboard,
-  createRelaseCasesKeyboard,
+  createReleaseCasesKeyboard,
 } from "#root/bot/keyboards/case.js";
 import {
   getItemDescription,
@@ -28,14 +28,14 @@ const feature = composer.chatType("private");
 
 feature.callbackQuery(
   casesMenuData.filter(),
-  logHandle("keyboard-casemenu-select"),
+  logHandle("keyboard-case_menu-select"),
   async (ctx) => {
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
     }
     ctx.answerCallbackQuery();
     return ctx.reply(ctx.t("cases.main"), {
-      reply_markup: await createRelaseCasesKeyboard(ctx),
+      reply_markup: await createReleaseCasesKeyboard(ctx),
     });
   },
 );
@@ -78,7 +78,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   caseOpenData.filter(),
-  logHandle("keyboard-caseopen-select"),
+  logHandle("keyboard-case-open-select"),
   async (ctx) => {
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
@@ -100,32 +100,32 @@ feature.callbackQuery(
     userInventory.coins -= box.price;
     await userInventory.save();
     ctx.answerCallbackQuery();
-    const getingRarity = getRandomRarity();
+    const getRarity = getRandomRarity();
     ctx.reply(ctx.t("cases.case-open"));
-    const lootingItems = await getLootByRarity(getingRarity, box.loot); // это пиздец как долго, так что анимацию запустить до
+    const lootingItems = await getLootByRarity(getRarity, box.loot); // это пиздец как долго, так что анимацию запустить до
     if (lootingItems === undefined) {
       return ctx.reply(ctx.t("loot.no-looting"));
     }
-    const dropedItem = getRandomItem(lootingItems);
-    if (dropedItem === undefined) {
+    const dropItem = getRandomItem(lootingItems);
+    if (dropItem === undefined) {
       return ctx.reply(ctx.t("loot.no-looting"));
     }
-    userInventory.items.push(dropedItem.id);
+    userInventory.items.push(dropItem.id);
     await userInventory.save();
-    if (dropedItem.file_id === undefined) {
+    if (dropItem.file_id === undefined) {
       return ctx.reply(
         ctx.t("loot.drop", {
-          name: itemName(dropedItem, ctx.database.user.locate_code),
-          price: dropedItem.price,
-          rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
+          name: itemName(dropItem, ctx.database.user.locate_code),
+          price: dropItem.price,
+          rarity: ctx.t(`loot.${dropItem.rarity.toLowerCase()}`),
         }),
       );
     }
-    return ctx.replyWithPhoto(dropedItem.file_id, {
+    return ctx.replyWithPhoto(dropItem.file_id, {
       caption: ctx.t("loot.drop", {
-        name: itemName(dropedItem, ctx.database.user.locate_code),
-        price: dropedItem.price,
-        rarity: ctx.t(`loot.${dropedItem.rarity.toLowerCase()}`),
+        name: itemName(dropItem, ctx.database.user.locate_code),
+        price: dropItem.price,
+        rarity: ctx.t(`loot.${dropItem.rarity.toLowerCase()}`),
       }),
     });
   },
@@ -133,7 +133,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   caseInfoData.filter(),
-  logHandle("keyboard-caseinfo-select"),
+  logHandle("keyboard-case-info-select"),
   async (ctx) => {
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
@@ -152,7 +152,6 @@ feature.callbackQuery(
     ctx.answerCallbackQuery();
     if (ctx.msg?.photo) {
       if (item.file_id) {
-        // оправка предмета с фото, если прошлый с фото
         return ctx.editMessageMedia(
           {
             type: "photo",
@@ -167,7 +166,6 @@ feature.callbackQuery(
           },
         );
       }
-      // оправка предмета без фото, если прошлый с фото
       ctx.deleteMessage();
       return ctx.reply(
         ctx.t("cases.case-info", {
@@ -181,7 +179,6 @@ feature.callbackQuery(
     }
     if (item.file_id) {
       return ctx.replyWithPhoto(item.file_id, {
-        // оправка предмета с фото, если прошлый без фото
         caption: ctx.t("cases.case-info", {
           name: caseName(box, ctx.database.user.locate_code),
           loot: description.toString(),
@@ -189,7 +186,6 @@ feature.callbackQuery(
         reply_markup: await createInfoMenuKeyboard(ctx, caseId, page),
       });
     }
-    // оправка предмета без фото, если прошлый без фото
     return ctx.editMessageText(
       ctx.t("cases.case-info", {
         name: caseName(box, ctx.database.user.locate_code),

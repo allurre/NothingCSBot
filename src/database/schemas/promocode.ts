@@ -11,7 +11,7 @@ const PromocodeSchema: Schema = new Schema({
   type_id: { type: Number, required: true, default: 1 },
 });
 
-PromocodeSchema.methods.useage = async function promoUse() {
+PromocodeSchema.methods.usage = async function promoUse() {
   this.activated += 1;
   await this.save({ validateBeforeSave: false });
 };
@@ -28,9 +28,9 @@ export async function getPromocode(
     return undefined;
   }
 
-  const prommocodeDatabase = await Promocode.findById(code);
-  if (prommocodeDatabase) {
-    return prommocodeDatabase;
+  const promocodeDatabase = await Promocode.findById(code);
+  if (promocodeDatabase) {
+    return promocodeDatabase;
   }
   logger.error("Promocode is not found.");
   return undefined;

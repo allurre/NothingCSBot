@@ -21,7 +21,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.callbackQuery(
   promocodesActiveData.filter(),
-  logHandle("keyboard-promomanage-select"),
+  logHandle("keyboard-active_promo-view-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     const activePromos = await getAllActivePromocodes();
@@ -35,7 +35,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   promocodesExpiredData.filter(),
-  logHandle("keyboard-expiredpromomanage-select"),
+  logHandle("keyboard-expired_promo-view-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     const expiredPromos = await getAllExpiredPromocodes();

@@ -2,7 +2,7 @@ import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { isAdmin } from "#root/bot/filters/index.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
-import { getInvetory } from "#root/database/schemas/user-inventory.js";
+import { getInventory } from "#root/database/schemas/user-inventory.js";
 import { adminUserChange } from "#root/bot/statelessquestion/index.js";
 import {
   moneyChangeData,
@@ -17,7 +17,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.callbackQuery(
   userManagementData.filter(),
-  logHandle("keyboard-usermanage-select"),
+  logHandle("keyboard-user-manage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.reply(ctx.t("admin.panel-pick_user"), {
@@ -28,12 +28,12 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   moneyChangeData.filter(),
-  logHandle("keyboard-usermoneychange-select"),
+  logHandle("keyboard-user-money_change-select"),
   async (ctx) => {
     const { id: userId, count } = moneyChangeData.unpack(
       ctx.callbackQuery.data,
     );
-    const userInventory = await getInvetory(userId);
+    const userInventory = await getInventory(userId);
     if (userInventory === undefined) {
       ctx.answerCallbackQuery();
       return ctx.reply(ctx.t("errors.no-select-user-found"));
@@ -54,7 +54,7 @@ feature.callbackQuery(
     userInventory.coins += count;
     userInventory.save();
     ctx.answerCallbackQuery();
-    ctx.reply(ctx.t("admin.panel-sucsess"), {
+    ctx.reply(ctx.t("admin.panel-success"), {
       reply_markup: { remove_keyboard: true },
     });
   },
@@ -62,12 +62,12 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   shootChangeData.filter(),
-  logHandle("keyboard-usertargetschange-select"),
+  logHandle("keyboard-user-targets_change-select"),
   async (ctx) => {
     const { id: userId, count } = shootChangeData.unpack(
       ctx.callbackQuery.data,
     );
-    const userInventory = await getInvetory(userId);
+    const userInventory = await getInventory(userId);
     if (userInventory === undefined) {
       ctx.answerCallbackQuery();
       return ctx.reply(ctx.t("errors.no-select-user-found"));
@@ -88,7 +88,7 @@ feature.callbackQuery(
     userInventory.targets += count;
     userInventory.save();
     ctx.answerCallbackQuery();
-    ctx.reply(ctx.t("admin.panel-sucsess"), {
+    ctx.reply(ctx.t("admin.panel-success"), {
       reply_markup: { remove_keyboard: true },
     });
   },

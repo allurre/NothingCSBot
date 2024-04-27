@@ -5,9 +5,9 @@ import { config } from "#root/config.js";
 import User from "#root/database/schemas/user.js";
 import Inventory from "#root/database/schemas/user-inventory.js";
 import Stats from "#root/database/schemas/user-stats.js";
-import Referrals from "#root/database/schemas/referals.js";
 import SubscribeChannel from "#root/database/schemas/subscribe-channels.js";
 import UserSubscribeChannels from "#root/database/schemas/user-subscribe-channels.js";
+import Referrals from "#root/database/schemas/referrals.js";
 
 mongoose.set("strictQuery", true);
 

@@ -9,9 +9,9 @@ const composer = new Composer<Context>();
 
 const feature = composer.chatType(["private", "group"]).filter(isAdmin);
 
-feature.on(":chat_shared", logHandle("admin-chatshare"), async (ctx) => {
-  const reqwest = ctx.message.chat_shared.request_id;
-  switch (reqwest) {
+feature.on(":chat_shared", logHandle("admin-chat-share"), async (ctx) => {
+  const request = ctx.message.chat_shared.request_id;
+  switch (request) {
     case 1001: {
       const selectChatId = ctx.message.chat_shared.chat_id;
       const allChannels = await getAllSubscribeChannels();
@@ -27,7 +27,7 @@ feature.on(":chat_shared", logHandle("admin-chatshare"), async (ctx) => {
         ctx.logger.error(error);
       }
       if (selectChat === undefined || selectChatAdmins === undefined) {
-        return ctx.reply(ctx.t("admin.panel-faled_new_channel"));
+        return ctx.reply(ctx.t("admin.panel-failed_new_channel"));
       }
       const isChatInclude = allChannels.some(
         (channel) => channel.id.toString() === selectChatId.toString(),
@@ -46,7 +46,7 @@ feature.on(":chat_shared", logHandle("admin-chatshare"), async (ctx) => {
           },
         );
       }
-      ctx.reply(ctx.t("admin.panel-faled_new_channel"), {
+      ctx.reply(ctx.t("admin.panel-failed_new_channel"), {
         reply_markup: { remove_keyboard: true },
       });
 

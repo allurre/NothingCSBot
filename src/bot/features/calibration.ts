@@ -3,9 +3,9 @@ import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { calibrationData } from "#root/bot/callback-data/index.js";
 import {
-  getColibrationRangID,
+  getCalibrationRangID,
   getRangById,
-} from "#root/bot/helpers/varibles.js";
+} from "#root/bot/helpers/variables.js";
 
 const composer = new Composer<Context>();
 
@@ -20,11 +20,11 @@ feature.callbackQuery(
     }
     const userDatabase = ctx.database.user;
     if (userDatabase.status_id !== -1) {
-      return ctx.answerCallbackQuery(ctx.t("calibration.allready-complite"));
+      return ctx.answerCallbackQuery(ctx.t("calibration.already_complete"));
     }
     ctx.answerCallbackQuery();
     const calibrationMessage = await ctx.replyWithDice("🎯");
-    const rangId: number = getColibrationRangID(calibrationMessage.dice.value);
+    const rangId: number = getCalibrationRangID(calibrationMessage.dice.value);
     userDatabase.status_id = rangId;
     const timerPromise = new Promise((resolve) => {
       setTimeout(resolve, 3000);

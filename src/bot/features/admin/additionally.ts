@@ -25,7 +25,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.callbackQuery(
   subscribeChannelsManagementData.filter(),
-  logHandle("keyboard-subscribechannelsmanage-select"),
+  logHandle("keyboard-subscribe_channels-manage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     const allChannels = await getAllSubscribeChannels();
@@ -55,7 +55,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   addSubscribeChannelData.filter(),
-  logHandle("keyboard-addsubscribechannel-select"),
+  logHandle("keyboard-subscribe_channel-add-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.reply(ctx.t("admin.panel-pick_new_channel"), {
@@ -66,7 +66,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   removeSubscribeChannelData.filter(),
-  logHandle("keyboard-removesubscribechannels-select"),
+  logHandle("keyboard-subscribe_channels-remove-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.editMessageText(ctx.t("admin.panel-remove_channel"), {
@@ -77,7 +77,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   deleteSubscribeChannelData.filter(),
-  logHandle("keyboard-deletesubscribechannel-select"),
+  logHandle("keyboard-subscribe_channel-delete-select"),
   async (ctx) => {
     const { id: channelId } = deleteSubscribeChannelData.unpack(
       ctx.callbackQuery.data,

@@ -70,7 +70,7 @@ export function createCase(
   return caseDatabase;
 }
 
-export async function getAllReleasedCases(): Promise<
+export async function getAllReleaseCases(): Promise<
   Array<Document & ICommonCase> | undefined
 > {
   const releasedCases = await Case.find({ release: true });
@@ -105,14 +105,14 @@ export async function getAllCases(): Promise<
 
 export async function updateCaseData(
   id: string,
-  newcasedata: Partial<ICommonCase>,
+  newCaseData: Partial<ICommonCase>,
 ): Promise<(Document & ICommonCase) | undefined> {
   const caseDocument = await Case.findById(id);
   if (!caseDocument) {
     logger.error("Case is not found.");
     return undefined;
   }
-  Object.assign(caseDocument, newcasedata);
+  Object.assign(caseDocument, newCaseData);
   await caseDocument.save();
   return caseDocument;
 }

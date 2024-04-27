@@ -43,7 +43,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   additionallyChannelData.filter(),
-  logHandle("keyboard-additionallychannel-select"),
+  logHandle("keyboard-additionally_channel-select"),
   async (ctx) => {
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
@@ -80,7 +80,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   claimAdditionallyShootsData.filter(),
-  logHandle("keyboard-additionallychannel-select"),
+  logHandle("keyboard-additionally_channel-select"),
   async (ctx) => {
     if (ctx.database === undefined) {
       return ctx.answerCallbackQuery(ctx.t("errors.no-registered-user"));
@@ -125,7 +125,7 @@ feature.callbackQuery(
     } else if (userChannels.channels.length === 0) {
       ctx.reply(ctx.t("additionally.no-subs"));
     } else {
-      ctx.reply(ctx.t("additionally.allready-collect"));
+      ctx.reply(ctx.t("additionally.already-collect"));
     }
   },
 );

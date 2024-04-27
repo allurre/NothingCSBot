@@ -3,7 +3,7 @@ import { logger } from "#root/logger.js";
 import {
   IUserInventoryItem,
   itemRarities,
-} from "../interfaces/user-inventoty-item.js";
+} from "../interfaces/user-inventory-item.js";
 
 const ItemSchema: Schema = new Schema({
   _id: { type: String, required: true },

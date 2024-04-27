@@ -28,7 +28,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.callbackQuery(
   casesManagementData.filter(),
-  logHandle("keyboard-casesmangae-select"),
+  logHandle("keyboard-cases-manage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     const allCases = await getAllCases();
@@ -42,8 +42,8 @@ feature.callbackQuery(
             .map((box) => {
               const boxText = `<a href="${config.BOT_LINK}?start=admincase-edit_${box.id}">${caseName(box, ctx.database.user.locate_code)}</a>`;
               const link = box.release
-                ? `<a href="${config.BOT_LINK}?start=admincase-unrel_${box.id}">${ctx.t("cases.unrelase")}</a>`
-                : `<a href="${config.BOT_LINK}?start=admincase-rel_${box.id}">${ctx.t("cases.relase")}</a>`;
+                ? `<a href="${config.BOT_LINK}?start=admincase-unrel_${box.id}">${ctx.t("cases.unreleased")}</a>`
+                : `<a href="${config.BOT_LINK}?start=admincase-rel_${box.id}">${ctx.t("cases.release")}</a>`;
               return `${boxText} - ${link}`;
             })
             .join("\n");
@@ -61,7 +61,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   addCaseData.filter(),
-  logHandle("keyboard-caseadd-select"),
+  logHandle("keyboard-case-add-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.reply(
@@ -77,7 +77,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   editCaseMenuData.filter(),
-  logHandle("keyboard-caseedit-select"),
+  logHandle("keyboard-case-edit-menu-select"),
   async (ctx) => {
     const { id: caseId } = editCaseMenuData.unpack(ctx.callbackQuery.data);
     const box = await getCase(caseId);
@@ -98,7 +98,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   editCaseData.filter(),
-  logHandle("keyboard-caseedit-select"),
+  logHandle("keyboard-case-edit-select"),
   async (ctx) => {
     const { id: caseId, field: caseField } = editCaseData.unpack(
       ctx.callbackQuery.data,
@@ -116,7 +116,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   editCaseImageData.filter(),
-  logHandle("keyboard-caseedit-select"),
+  logHandle("keyboard-case-edit-image-select"),
   async (ctx) => {
     const { id: caseId } = editCaseImageData.unpack(ctx.callbackQuery.data);
     const box = getCase(caseId);
@@ -130,7 +130,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   editLootData.filter(),
-  logHandle("keyboard-caseedit-select"),
+  logHandle("keyboard-case-edit-loot-select"),
   async (ctx) => {
     const { id: caseId } = editLootData.unpack(ctx.callbackQuery.data);
     const box = getCase(caseId);
@@ -143,7 +143,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   editCaseLocaleData.filter(),
-  logHandle("keyboard-caseedit-select"),
+  logHandle("keyboard-case-edit-locate-select"),
   async (ctx) => {
     const { id: caseId } = editCaseLocaleData.unpack(ctx.callbackQuery.data);
     const box = getCase(caseId);

@@ -1,6 +1,6 @@
 import { InlineKeyboard } from "grammy";
 import type { Context } from "#root/bot/context.js";
-import { getAllReleasedCases, getCase } from "#root/database/schemas/cases.js";
+import { getAllReleaseCases, getCase } from "#root/database/schemas/cases.js";
 import { chunk } from "#root/bot/helpers/keyboard.js";
 import {
   casesMenuData,
@@ -11,9 +11,9 @@ import {
 } from "#root/bot/callback-data/index.js";
 import { caseName } from "#root/bot/helpers/text.js";
 
-export const createRelaseCasesKeyboard = async (ctx: Context) => {
-  const allRelaseCases = await getAllReleasedCases();
-  if (allRelaseCases === undefined || allRelaseCases.length === 0) {
+export const createReleaseCasesKeyboard = async (ctx: Context) => {
+  const allReleaseCases = await getAllReleaseCases();
+  if (allReleaseCases === undefined || allReleaseCases.length === 0) {
     return InlineKeyboard.from([
       [
         {
@@ -25,7 +25,7 @@ export const createRelaseCasesKeyboard = async (ctx: Context) => {
   }
 
   const caseKeyboard = chunk(
-    allRelaseCases.map((box) => ({
+    allReleaseCases.map((box) => ({
       text: caseName(box, ctx.database.user.locate_code),
       callback_data: caseData.pack({
         id: box.id,

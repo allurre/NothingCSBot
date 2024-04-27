@@ -4,7 +4,7 @@ import { i18n } from "#root/bot/i18n.js";
 import { createItem } from "#root/database/schemas/items.js";
 
 export const adminNewItem = new StatelessQuestion(
-  "admin-newitem",
+  "admin-item_new",
   async (ctx) => {
     if (ctx.from === undefined) {
       return;

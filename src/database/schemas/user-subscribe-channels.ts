@@ -18,7 +18,7 @@ export async function getUserSubscribeChannels(
   id: number,
 ): Promise<(Document & IUserSubscribeChannels) | undefined> {
   if (!id) {
-    logger.error("User additionaly Id is required.");
+    logger.error("User additionally Id is required.");
     return undefined;
   }
 
@@ -36,7 +36,7 @@ export function createUserSubscribeChannels(
   id: number,
 ): (Document & IUserSubscribeChannels) | undefined {
   if (!id) {
-    logger.error("New user additionaly Id is required.");
+    logger.error("New user additionally Id is required.");
     return undefined;
   }
 

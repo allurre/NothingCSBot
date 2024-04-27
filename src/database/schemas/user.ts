@@ -11,7 +11,7 @@ const UserSchema: Schema = new Schema({
   username: { type: String, required: true },
   locate_code: { type: String, required: true, default: "" },
   status_id: { type: Number, required: true, default: -1 },
-  referal_id: { type: Number, required: false, default: undefined },
+  referral_id: { type: Number, required: false, default: undefined },
   daily: {
     streak: { type: Number, default: 0 },
     timestamp: Date,

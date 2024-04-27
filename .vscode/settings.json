@@ -4,5 +4,20 @@
         "**/*.rpa": true,
         "**/*.rpymc": true,
         "**/cache/": true
-    }
+    },
+    "cSpell.words": [
+        "admincase",
+        "adminitem",
+        "candrop",
+        "fastify",
+        "grammyjs",
+        "headshots",
+        "pino",
+        "promocode",
+        "promocodes",
+        "psave",
+        "setcommands",
+        "statelessquestion",
+        "unrel"
+    ]
 }

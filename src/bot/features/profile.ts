@@ -2,10 +2,10 @@ import { Composer } from "grammy";
 import type { Context } from "#root/bot/context.js";
 import { logHandle } from "#root/bot/helpers/logging.js";
 import { inventoryData, profileData } from "#root/bot/callback-data/index.js";
-import { getInvetory } from "#root/database/schemas/user-inventory.js";
+import { getInventory } from "#root/database/schemas/user-inventory.js";
 import { getUser } from "#root/database/schemas/user.js";
 import { getStats } from "#root/database/schemas/user-stats.js";
-import { getRangById } from "#root/bot/helpers/varibles.js";
+import { getRangById } from "#root/bot/helpers/variables.js";
 import {
   createInventoryKeyboard,
   createProfileKeyboard,
@@ -17,7 +17,7 @@ const feature = composer.chatType("private");
 
 feature.command("profile", logHandle("command-profile"), async (ctx) => {
   const userId = Number.parseInt(ctx.match, 10);
-  const userInventory = await getInvetory(userId);
+  const userInventory = await getInventory(userId);
   const userDatabase = await getUser(userId);
   const userStats = await getStats(userId);
   if (

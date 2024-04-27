@@ -19,7 +19,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.command(
   "setcommands",
-  logHandle("command-setcommands"),
+  logHandle("command-set_commands"),
   chatAction("typing"),
   setCommandsHandler,
 );
@@ -32,7 +32,7 @@ feature.command("panel", logHandle("command-admin-panel"), async (ctx) => {
 
 feature.callbackQuery(
   adminPanelData.filter(),
-  logHandle("keyboard-usermanage-select"),
+  logHandle("keyboard-user_manage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.editMessageText(ctx.t("admin.panel-main"), {

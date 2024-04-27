@@ -5,7 +5,7 @@ import { addSubscribeChannel } from "#root/database/schemas/subscribe-channels.j
 import { containsLink } from "#root/bot/helpers/validator.js";
 
 export const adminNewChannel = new StatelessQuestion(
-  "admin-newchannelurl",
+  "admin-channel_url",
   async (ctx, additionalState) => {
     if (ctx.from === undefined) {
       return;
@@ -17,10 +17,10 @@ export const adminNewChannel = new StatelessQuestion(
     if (ctx.message.text === undefined) {
       return;
     }
-    const parms = ctx.message.text.split("@");
-    const url = parms[0];
-    const name = parms[1];
-    const additionally = Number.parseInt(parms[2], 10) || 1;
+    const prams = ctx.message.text.split("@");
+    const url = prams[0];
+    const name = prams[1];
+    const additionally = Number.parseInt(prams[2], 10) || 1;
     const channelId = Number.parseInt(additionalState, 10);
     if (channelId === undefined) {
       ctx.reply(i18n.t(adminUser.locate_code, "errors.an-error-has-occurred"));
@@ -39,7 +39,7 @@ export const adminNewChannel = new StatelessQuestion(
       return;
     }
     addSubscribeChannel(channelId, url, name, additionally);
-    ctx.reply(i18n.t(adminUser.locate_code, "admin.panel-sucsess"), {
+    ctx.reply(i18n.t(adminUser.locate_code, "admin.panel-success"), {
       reply_markup: { remove_keyboard: true },
     });
   },

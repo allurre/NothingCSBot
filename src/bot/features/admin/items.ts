@@ -18,7 +18,7 @@ const feature = composer.chatType("private").filter(isAdmin);
 
 feature.callbackQuery(
   itemsManagementData.filter(),
-  logHandle("keyboard-itemsmanage-select"),
+  logHandle("keyboard-items-manage-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     const allItems = await getAllItems();
@@ -48,7 +48,7 @@ feature.callbackQuery(
 
 feature.callbackQuery(
   addItemData.filter(),
-  logHandle("keyboard-caseadd-select"),
+  logHandle("keyboard-case-add-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.reply(

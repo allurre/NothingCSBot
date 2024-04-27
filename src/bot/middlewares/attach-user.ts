@@ -6,8 +6,8 @@ import { IUserInventory } from "#root/database/interfaces/user-inventory.js";
 import { createUser, getUser } from "#root/database/schemas/user.js";
 import { createStats, getStats } from "#root/database/schemas/user-stats.js";
 import {
-  createInvetory,
-  getInvetory,
+  createInventory,
+  getInventory,
 } from "#root/database/schemas/user-inventory.js";
 import type { Context } from "../context.js";
 
@@ -39,10 +39,10 @@ export async function attachUser(ctx: Context, next: NextFunction) {
   }
 
   const userInventory: (Document & IUserInventory) | undefined =
-    await getInvetory(ctx.from.id);
+    await getInventory(ctx.from.id);
   if (userInventory === undefined) {
     const newInventory: (Document & IUserInventory) | undefined =
-      createInvetory(ctx.from.id);
+      createInventory(ctx.from.id);
     if (newInventory) await newInventory.save();
     else return;
     inventoryDB = newInventory;

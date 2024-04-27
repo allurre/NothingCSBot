@@ -1,4 +1,4 @@
-export function getColibrationRangID(dice: number): number {
+export function getCalibrationRangID(dice: number): number {
   const diceToRange: { [key: number]: number } = {
     1: 1,
     2: 2,

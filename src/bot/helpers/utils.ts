@@ -7,19 +7,17 @@ import { Document } from "mongoose";
 import {
   IUserInventoryItem,
   rarityChancesMap,
-} from "#root/database/interfaces/user-inventoty-item.js";
+} from "#root/database/interfaces/user-inventory-item.js";
 import { getItem } from "#root/database/schemas/items.js";
 import {
   getRangById,
   getShootChance,
   shootReward,
   shootsRang,
-} from "#root/bot/helpers/varibles.js";
-import { executeStartPromocode } from "#root/bot/handlers/start/promocode.js";
+} from "#root/bot/helpers/variables.js";
 import { hitText } from "#root/bot/helpers/text.js";
 import { i18n } from "#root/bot/i18n.js";
 import { Context } from "#root/bot/context.js";
-import { executeAdminCase } from "../handlers/start/admin/cases.js";
 
 export function randomNumber(min: number, max: number): number {
   const random = randomBytes(8).readBigUInt64BE();
@@ -264,18 +262,4 @@ export function getItemDescription(
       ${i18n.t(locateCode, "loot.quality")}: ${i18n.t(locateCode, `loot.${item.rarity.toLowerCase()}`)}
       ${i18n.t(locateCode, "loot.chance")}: ${item.group_drop_chance}%
     `;
-}
-
-export function executeStartMatch(
-  ctx: Context,
-  action: string,
-  arguments_: string,
-) {
-  if (action.startsWith("admincase")) {
-    const caseAction = arguments_.split("_")[0];
-    const caseId = arguments_.split("_")[1];
-    executeAdminCase(ctx, caseAction, caseId);
-  } else if (action === "promo") {
-    executeStartPromocode(ctx, arguments_);
-  }
 }

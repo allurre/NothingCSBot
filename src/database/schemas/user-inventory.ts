@@ -24,7 +24,7 @@ const Inventory = model<IUserInventory>("Inventory", InventorySchema);
 
 export default Inventory;
 
-export async function getInvetory(
+export async function getInventory(
   id: number,
 ): Promise<(Document & IUserInventory) | undefined> {
   if (!id) {
@@ -47,7 +47,7 @@ export async function getInvetory(
   return inventoryDatabase;
 }
 
-export function createInvetory(
+export function createInventory(
   id: number,
 ): (Document & IUserInventory) | undefined {
   if (!id) {

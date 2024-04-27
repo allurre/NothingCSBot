@@ -9,9 +9,9 @@ const composer = new Composer<Context>();
 
 const feature = composer.chatType(["private", "group"]).filter(isAdmin);
 
-feature.on(":users_shared", logHandle("admin-usershare"), async (ctx) => {
-  const reqwest = ctx.message.users_shared.request_id;
-  switch (reqwest) {
+feature.on(":users_shared", logHandle("admin-user-share"), async (ctx) => {
+  const request = ctx.message.users_shared.request_id;
+  switch (request) {
     case 1: {
       const selectUserId = ctx.message.users_shared.user_ids[0];
       const userDatabase = await getUser(selectUserId);

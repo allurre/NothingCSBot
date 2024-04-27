@@ -15,13 +15,13 @@ export async function executeAdminCase(
   switch (caseAction) {
     case "edit": {
       ctx.reply(
-        ctx.t("admin.pannel-info_case", {
+        ctx.t("admin.panel-info_case", {
           id: box.id,
           name: caseName(box, ctx.database.user.locate_code),
           price: box.price,
-          relase: box.release
-            ? ctx.t("admin.info-relase")
-            : ctx.t("admin.info-no-relase"),
+          release: box.release
+            ? ctx.t("admin.info-release")
+            : ctx.t("admin.info-no_release"),
           can_drop: box.can_drop ? ctx.t("default.yes") : ctx.t("default.no"),
         }),
         {
