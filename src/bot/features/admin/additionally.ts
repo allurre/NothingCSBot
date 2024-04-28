@@ -14,7 +14,7 @@ import {
 } from "#root/bot/keyboards/index.js";
 import {
   addSubscribeChannelData,
-  removeSubscribeChannelData,
+  deleteMenuSubscribeChannelData,
   deleteSubscribeChannelData,
   subscribeChannelsManagementData,
 } from "#root/bot/callback-data/index.js";
@@ -65,8 +65,8 @@ feature.callbackQuery(
 );
 
 feature.callbackQuery(
-  removeSubscribeChannelData.filter(),
-  logHandle("keyboard-subscribe_channels-remove-select"),
+  deleteMenuSubscribeChannelData.filter(),
+  logHandle("keyboard-subscribe_channels-delete_menu-select"),
   async (ctx) => {
     ctx.answerCallbackQuery();
     ctx.editMessageText(ctx.t("admin.panel-remove_channel"), {

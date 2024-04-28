@@ -5,7 +5,7 @@ import {
   addCaseData,
   addItemData,
   adminPanelData,
-  deleteItemData,
+  deleteMenuItemData,
   editCaseData,
   editCaseImageData,
   editCaseLocaleData,
@@ -39,7 +39,7 @@ export const createItemsManageKeyboard = async (ctx: Context) => {
       },
       {
         text: ctx.t("admin_buttons.item-delete"),
-        callback_data: deleteItemData.pack({}),
+        callback_data: deleteMenuItemData.pack({}),
       },
     ],
     [

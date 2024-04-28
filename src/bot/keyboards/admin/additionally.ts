@@ -6,7 +6,7 @@ import {
   addSubscribeChannelData,
   adminPanelData,
   deleteSubscribeChannelData,
-  removeSubscribeChannelData,
+  deleteMenuSubscribeChannelData,
 } from "#root/bot/callback-data/index.js";
 
 export const createChannelPickKeyboard = (ctx: Context) => {
@@ -33,7 +33,7 @@ export const createChannelsManageKeyboard = (ctx: Context) => {
       },
       {
         text: ctx.t("admin_buttons.remove-channel"),
-        callback_data: removeSubscribeChannelData.pack({}),
+        callback_data: deleteMenuSubscribeChannelData.pack({}),
       },
     ],
     [
