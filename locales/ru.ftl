@@ -74,7 +74,7 @@ workout_buttons =
     .additionally = Мишени
 
 shoot = 
-    .no-targets = У вас нет мишеней!
+    .no-targets = Артём гей
     .start = Стрельба по мишеням началась
     .end-head = Хедшот! {$reward}
     .end-body = Моя печень! {$reward}
